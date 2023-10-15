@@ -66,6 +66,14 @@ namespace WorldOfZuul
                         Console.WriteLine(currentRoom?.LongDescription);
                         break;
 
+                    case "actions":
+                        Console.WriteLine("you entered actions");
+                        break;
+
+                    case "customize":
+                        Console.WriteLine("you entered customize");
+                        break;
+
                     case "back":
                         if (previousRoom == null)
                             Console.WriteLine("You can't go back from here!");
@@ -73,11 +81,9 @@ namespace WorldOfZuul
                             currentRoom = previousRoom;
                         break;
 
-                    case "north":
-                    case "south":
-                    case "east":
-                    case "west":
-                        Move(command.Name);
+                    case "move":
+                        Console.WriteLine("you entered move"); //TODO: ADD NORTH, EAST, WEST
+                        //Move(command.Name); 
                         break;
 
                     case "quit":
@@ -123,7 +129,9 @@ namespace WorldOfZuul
             Console.WriteLine("You are lost. You are alone. You wander");
             Console.WriteLine("around the university.");
             Console.WriteLine();
-            Console.WriteLine("Navigate by typing 'north', 'south', 'east', or 'west'.");
+            Console.WriteLine("Type 'move' to navigate");
+            Console.WriteLine("Type 'customize' to customize your city");
+            Console.WriteLine("Type 'actions' to "); //TODO: ADD DESCRIPTION FOR ACTIONS
             Console.WriteLine("Type 'look' for more details.");
             Console.WriteLine("Type 'back' to go to the previous room.");
             Console.WriteLine("Type 'help' to print this message again.");
