@@ -82,8 +82,26 @@ namespace WorldOfZuul
                         break;
 
                     case "move":
-                        Console.WriteLine("you entered move"); //TODO: ADD NORTH, EAST, WEST
-                        //Move(command.Name); 
+                        Console.WriteLine("write one of the following directions:");
+                        Console.WriteLine("north");
+                        Console.WriteLine("south");
+                        Console.WriteLine("east");
+                        Console.WriteLine("west");
+                        
+                        Console.Write("> ");
+
+                        string? inputLine = Console.ReadLine();
+                        List<string> directions = new List<string> {"east", "south", "north", "west" };
+
+                        while (!directions.Contains(inputLine))
+                        {
+                            Console.WriteLine("that is not valid direction.");
+                            Console.Write("> ");
+                            inputLine = Console.ReadLine();
+                        }
+
+                        Move(inputLine);
+                        
                         break;
 
                     case "quit":
