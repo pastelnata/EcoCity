@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\world of zuul.csproj": {}
+    "c:\\Users\\Lenovo\\Downloads\\Semester project\\EcoCity-3\\world of zuul\\world of zuul.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\world of zuul.csproj": {
+    "c:\\Users\\Lenovo\\Downloads\\Semester project\\EcoCity-3\\world of zuul\\world of zuul.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\world of zuul.csproj",
+        "projectUniqueName": "c:\\Users\\Lenovo\\Downloads\\Semester project\\EcoCity-3\\world of zuul\\world of zuul.csproj",
         "projectName": "world of zuul",
-        "projectPath": "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\world of zuul.csproj",
+        "projectPath": "c:\\Users\\Lenovo\\Downloads\\Semester project\\EcoCity-3\\world of zuul\\world of zuul.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\obj\\",
+        "outputPath": "c:\\Users\\Lenovo\\Downloads\\Semester project\\EcoCity-3\\world of zuul\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
