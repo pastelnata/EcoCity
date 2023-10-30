@@ -26,3 +26,17 @@ C:\Users\Lenovo\Downloads\Semester project\code\EcoCity\world of zuul\obj\Debug\
 C:\Users\Lenovo\Downloads\Semester project\code\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.pdb
 C:\Users\Lenovo\Downloads\Semester project\code\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.genruntimeconfig.cache
 C:\Users\Lenovo\Downloads\Semester project\code\EcoCity\world of zuul\obj\Debug\net7.0\ref\world of zuul.dll
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.GeneratedMSBuildEditorConfig.editorconfig
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.AssemblyInfoInputs.cache
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.AssemblyInfo.cs
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.csproj.CoreCompileInputs.cache
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.dll
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\refint\world of zuul.dll
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.pdb
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\bin\Debug\net7.0\world of zuul.exe
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\bin\Debug\net7.0\world of zuul.deps.json
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\bin\Debug\net7.0\world of zuul.runtimeconfig.json
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\bin\Debug\net7.0\world of zuul.dll
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\bin\Debug\net7.0\world of zuul.pdb
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.genruntimeconfig.cache
+C:\Uni\SP\WorldOfZuul\EcoCity\world of zuul\obj\Debug\net7.0\ref\world of zuul.dll

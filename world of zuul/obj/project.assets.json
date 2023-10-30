@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Lenovo\\.nuget\\packages\\": {}
+    "C:\\Users\\Aday\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\world of zuul.csproj",
+      "projectUniqueName": "C:\\Uni\\SP\\WorldOfZuul\\EcoCity\\world of zuul\\world of zuul.csproj",
       "projectName": "world of zuul",
-      "projectPath": "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\world of zuul.csproj",
-      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Downloads\\Semester project\\code\\EcoCity\\world of zuul\\obj\\",
+      "projectPath": "C:\\Uni\\SP\\WorldOfZuul\\EcoCity\\world of zuul\\world of zuul.csproj",
+      "packagesPath": "C:\\Users\\Aday\\.nuget\\packages\\",
+      "outputPath": "C:\\Uni\\SP\\WorldOfZuul\\EcoCity\\world of zuul\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Aday\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
