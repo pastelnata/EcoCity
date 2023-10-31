@@ -12,24 +12,29 @@ namespace WorldOfZuul
 
         private void CreateRooms()
         {
-  
-            Room? outside = new("Outside", "You are standing outside the main entrance of the university. To the east is a large building, to the south is a computing lab, and to the west is the campus pub.");
+            Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
+            Room? northside = new("Northside", "You are standing in the Northside of your city.");
+            Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
+            Room? westside = new("Westside", "You are now located in the Westside of your city.");
+            Room? centre = new("Centre", "You are standing in the centre.");
             Room? eastside = new("Eastside", "You are now located in the Eastside of your city.");
-            Room? westside = new("Pub", "You've entered the campus pub. It's a cozy place, with a few students chatting over drinks. There's a bar near you and some pool tables at the far end.");
-            Room? southside = new("Lab", "You're in a computing lab. Desks with computers line the walls, and there's an office to the east. The hum of machines fills the room.");
-            Room? office = new("Office", "You've entered what seems to be an administration office. There's a large desk with a computer on it, and some bookshelves lining one wall.");
+            Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
+            Room? southside = new("Southside", "You are now located in the Southside of your city.");
+            Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
-            outside.SetExits(null, eastside, southside, westside); // North, East, South, West
 
-            eastside.SetExit("west", outside);
+            // room.SetExits(North, East, South, West)
+            northwestside.SetExits(null, northside, westside, null);
+            northside.SetExits(null, northeastside, centre, northwestside);
+            northeastside.SetExits(null, null, eastside, northside);
+            westside.SetExits(northwestside, centre, southwestside, null);
+            centre.SetExits(northside, eastside, southside, westside); 
+            eastside.SetExits(northeastside, null, southeastside, centre);
+            southwestside.SetExits(southwestside, southside, null, null);
+            southside.SetExits(centre, southeastside, null, southwestside);
+            southeastside.SetExits(eastside,null , null, southside);
 
-            westside.SetExit("east", outside);
-
-            southside.SetExits(outside, office, null, null);
-
-            office.SetExit("west", southside);
-
-            currentRoom = outside;
+            currentRoom = centre;
         }
 
         public void Play()
