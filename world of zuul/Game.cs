@@ -15,19 +15,19 @@ namespace WorldOfZuul
   
             Room? outside = new("Outside", "You are standing outside the main entrance of the university. To the east is a large building, to the south is a computing lab, and to the west is the campus pub.");
             Room? eastside = new("Eastside", "You are now located in the Eastside of your city.");
-            Room? pub = new("Pub", "You've entered the campus pub. It's a cozy place, with a few students chatting over drinks. There's a bar near you and some pool tables at the far end.");
-            Room? lab = new("Lab", "You're in a computing lab. Desks with computers line the walls, and there's an office to the east. The hum of machines fills the room.");
+            Room? westside = new("Pub", "You've entered the campus pub. It's a cozy place, with a few students chatting over drinks. There's a bar near you and some pool tables at the far end.");
+            Room? southside = new("Lab", "You're in a computing lab. Desks with computers line the walls, and there's an office to the east. The hum of machines fills the room.");
             Room? office = new("Office", "You've entered what seems to be an administration office. There's a large desk with a computer on it, and some bookshelves lining one wall.");
 
-            outside.SetExits(null, eastside, lab, pub); // North, East, South, West
+            outside.SetExits(null, eastside, southside, westside); // North, East, South, West
 
             eastside.SetExit("west", outside);
 
-            pub.SetExit("east", outside);
+            westside.SetExit("east", outside);
 
-            lab.SetExits(outside, office, null, null);
+            southside.SetExits(outside, office, null, null);
 
-            office.SetExit("west", lab);
+            office.SetExit("west", southside);
 
             currentRoom = outside;
         }
@@ -71,24 +71,87 @@ namespace WorldOfZuul
                         break;
 
                     case "customize":
-                        List<string> buildings = new List<string>();
-                        int statHolder1 = 0;
-                        string statHolder2 = "";
-                        int statHolder3 = 0;
-                        double energy1Consumption = 0;
-                        double energy1Income = 0;
-                        double energy2Consumption = 0;
-                        double energy2Income = 0;
-                        double energy3Consumption = 0;
-                        double energy3Income = 0;
-                        if (energy1Consumption == 0 && energy2Consumption == 0 && energy3Consumption == 0)
+                        Console.WriteLine("energy");
+                        Console.WriteLine("infrastructure");
+                        Console.WriteLine("population");
+                        Console.WriteLine("back");
+
+                        Console.Write("> ");
+                        
+                        string? userInput = Console.ReadLine();
+                        List<string> customizeOptions = new List<string> {"energy", "infrastructure", "population"};
+
+                        while (!customizeOptions.Contains(userInput))
                         {
-                            Console.WriteLine($"You are currently not using any type of energy.");
+                            Console.WriteLine("That is not a valid option.");
+                            Console.Write("> ");
+                            userInput = Console.ReadLine();
                         }
-                        Console.WriteLine($"You have {buildings.Count} buildings.");
-                        Console.WriteLine(statHolder1);
-                        Console.WriteLine(statHolder2);
-                        Console.WriteLine(statHolder3);;
+
+                        if (userInput == "infrastructure")
+                        {
+                            Console.WriteLine("build");
+                            Console.WriteLine("demolish");
+                            List<string> infrastructureOptions = new List<string> {"build", "demolish"};
+
+                            string userInput1 = Console.ReadLine();
+
+                            while (!infrastructureOptions.Contains(userInput1))
+                            {
+                                Console.WriteLine("That is not a valid option.");
+                                Console.Write("> ");
+                                userInput1 = Console.ReadLine();  
+                            }
+
+                            if (userInput1 == "build")
+                            {
+                                string building1 = "Build X";
+                                int costBuilding1 = 0;
+                                int energyBuilding1 = 0;
+                                int pollutionBuilding1 = 0;
+
+                                string building2 = "Build Y";
+                                int costBuilding2 = 0;
+                                int energyBuilding2 = 0;
+                                int pollutionBuilding2 = 0;
+
+                                Build(building1, costBuilding1, energyBuilding1, pollutionBuilding1);
+                                Build(building2, costBuilding2, energyBuilding2, pollutionBuilding2);
+                            }
+
+                            if (userInput1 == "demolish")
+                            {
+                                Console.WriteLine("Demolish");
+                            }
+                        }
+
+                        if (userInput == "population")
+                        {
+                            Console.WriteLine("you have entered population");
+                        }
+
+                        if (userInput == "energy")
+                        {
+                            List<string> buildings = new List<string>();
+                            int statHolder1 = 0;
+                            string statHolder2 = "";
+                            int statHolder3 = 0;
+                            double energy1Consumption = 0;
+                            double energy1Income = 0;
+                            double energy2Consumption = 0;
+                            double energy2Income = 0;
+                            double energy3Consumption = 0;
+                            double energy3Income = 0;
+                            if (energy1Consumption == 0 && energy2Consumption == 0 && energy3Consumption == 0)
+                            {
+                                Console.WriteLine($"You are currently not using any type of energy.");
+                            }
+                            Console.WriteLine($"You have {buildings.Count} buildings.");
+                            Console.WriteLine(statHolder1);
+                            Console.WriteLine(statHolder2);
+                            Console.WriteLine(statHolder3);
+                        }
+                        
                         break;
 
                     case "back":
@@ -171,6 +234,16 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'back' to go to the previous room.");
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
+        }
+
+        private static void Build(string buildingName, int cost, int energyConsumption, int pollution)
+        {
+            Console.WriteLine("What do you wish to build?");
+            Console.WriteLine("");
+            Console.WriteLine($"Build {buildingName}");
+            Console.WriteLine($"Cost: {cost}");
+            Console.WriteLine($"Energy consumption: {energyConsumption}");
+            Console.WriteLine($"Pollution: {pollution}");
         }
     }
 }
