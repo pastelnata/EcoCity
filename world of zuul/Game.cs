@@ -7,6 +7,7 @@ namespace WorldOfZuul
     {
         private Room? currentRoom;
         private Room? previousRoom;
+        private Room[] rooms = new Room[9];
 
         public Game()
         {
@@ -25,6 +26,7 @@ namespace WorldOfZuul
             Room? southside = new("Southside", "You are now located in the Southside of your city.");
             Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
+            rooms = new Room[] {northwestside, northside, northeastside, westside, centre, eastside, southwestside, southside, southeastside};
 
             // room.SetExits(North, East, South, West)
             northwestside.SetExits(null, northside, westside, null);
@@ -33,7 +35,7 @@ namespace WorldOfZuul
             westside.SetExits(northwestside, centre, southwestside, null);
             centre.SetExits(northside, eastside, southside, westside); 
             eastside.SetExits(northeastside, null, southeastside, centre);
-            southwestside.SetExits(southwestside, southside, null, null);
+            southwestside.SetExits(westside, southside, null, null);
             southside.SetExits(centre, southeastside, null, southwestside);
             southeastside.SetExits(eastside,null , null, southside);
 
@@ -119,7 +121,7 @@ namespace WorldOfZuul
                             Console.Write("> ");
                             List<string> infrastructureOptions = new List<string> {"build", "demolish"};
 
-                            string userInput1 = Console.ReadLine();
+                            string? userInput1 = Console.ReadLine();
 
                             while (!infrastructureOptions.Contains(userInput1))
                             {
@@ -143,7 +145,7 @@ namespace WorldOfZuul
                                 Console.Write("> ");
 
                                 List<string> building = new List<string> {building1, building2};                                
-                                string chosenBuilding = Console.ReadLine();
+                                string? chosenBuilding = Console.ReadLine();
 
                                 while (!building.Contains(chosenBuilding))
                                 {
@@ -207,7 +209,7 @@ namespace WorldOfZuul
                         string? inputLine = Console.ReadLine();
                         List<string> directions = new List<string> {"east", "south", "north", "west" };
 
-                        while (!directions.Contains(inputLine))
+                        while (!directions.Contains(inputLine) || currentRoom == null)
                         {
                             Console.WriteLine("That is not valid direction.");
                             Console.Write("> ");
@@ -215,7 +217,7 @@ namespace WorldOfZuul
                         }
 
                         Move(inputLine);
-                        
+                        PrintMap(currentRoom,rooms);
                         break;
 
                     case "quit":
@@ -283,6 +285,27 @@ namespace WorldOfZuul
         {
             
             
+        }
+
+        private static void PrintMap(Room currentRoom,Room[] rooms)
+        {
+            Console.WriteLine("Map:");
+            for(int i=0; i<rooms.Length; i++)
+            {
+                
+                if(rooms[i]== currentRoom)
+                {
+                    Console.Write("X ");
+                }
+                else
+                {
+                    Console.Write(". ");
+                }
+                if((i+1)%3 == 0)
+                {
+                    Console.WriteLine();
+                }
+            }
         }
         }
     }
