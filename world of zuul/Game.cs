@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace WorldOfZuul
 {
@@ -42,7 +43,7 @@ namespace WorldOfZuul
         public void Play()
         {
             Parser parser = new();
-
+            int day = 0;
             PrintWelcome();
 
             bool continuePlaying = true;
@@ -74,7 +75,24 @@ namespace WorldOfZuul
                         break;
 
                     case "actions":
-                        Console.WriteLine("you entered actions");
+                        Console.WriteLine($"current day: {day}");
+                        Console.WriteLine("skip day");
+
+                        string? actionOptions = Console.ReadLine();
+                        List<string> actionsOptions = new List<string> {"skip day"};
+                        while (!actionsOptions.Contains(actionOptions))
+                        {
+                            Console.WriteLine("That is not a valid option.");
+                            Console.Write("> ");
+                            actionOptions = Console.ReadLine();
+                        }
+
+                        if (actionOptions == "skip day")
+                        {
+                            day++;
+                            Console.WriteLine("you have skipped a day.");
+                            Console.WriteLine($"current day: {day}");
+                        }
                         break;
 
                     case "customize":
@@ -82,7 +100,6 @@ namespace WorldOfZuul
                         Console.WriteLine("infrastructure");
                         Console.WriteLine("population");
                         Console.WriteLine("back");
-
                         Console.Write("> ");
                         
                         string? userInput = Console.ReadLine();
@@ -113,22 +130,16 @@ namespace WorldOfZuul
 
                             if (userInput1 == "build")
                             {
+                                
                                 Console.WriteLine("What do you wish to build?");
                                 Console.WriteLine(" ");
 
                                 string building1 = "building X";
-                                int costBuilding1 = 0;
-                                int energyBuilding1 = 0;
-                                int pollutionBuilding1 = 0;
-
                                 string building2 = "building Y";
-                                int costBuilding2 = 0;
-                                int energyBuilding2 = 0;
-                                int pollutionBuilding2 = 0;
 
-                                Build(building1, costBuilding1, energyBuilding1, pollutionBuilding1);
+                                Build("building X", 0, 0, 0);
                                 Console.WriteLine("");
-                                Build(building2, costBuilding2, energyBuilding2, pollutionBuilding2);
+                                Build("building Y", 0, 0, 0);
                                 Console.Write("> ");
 
                                 List<string> building = new List<string> {building1, building2};                                
@@ -139,16 +150,6 @@ namespace WorldOfZuul
                                     Console.WriteLine("That building does not exist.");
                                     Console.Write("> ");
                                     chosenBuilding = Console.ReadLine();
-                                }
-
-                                if (chosenBuilding == building1)
-                                {
-                                    BuildWhere(building1);
-                                }
-
-                                if (chosenBuilding == building2)
-                                {
-                                    BuildWhere(building2);
                                 }
                             }
 
@@ -275,49 +276,14 @@ namespace WorldOfZuul
             Console.WriteLine($"Cost: {cost}");
             Console.WriteLine($"Energy consumption: {energyConsumption}");
             Console.WriteLine($"Pollution: {pollution}");
+
         }
 
-        private static void BuildWhere(string buildingName)
+        private static void BuildPlace()
         {
-            Console.WriteLine($"where do you wish to build {buildingName}?");
-            Console.WriteLine("1. north");
-            Console.WriteLine("2. south");
-            Console.WriteLine("3. east");
-            Console.WriteLine("4. west");
-            Console.Write("> ");
-
-            List<string> rooms = new List<string> {"north", "south", "east", "west"};
-            string chosenPlace = Console.ReadLine();
-
-            while (!rooms.Contains(chosenPlace))
-            {
-                Console.WriteLine("That is not a place.");
-                Console.Write("> ");
-                chosenPlace = Console.ReadLine();
-            }
-
-                switch (chosenPlace)
-                {
-                    case "north":
-                    Console.WriteLine($"You built {buildingName} in the north area.");
-                    // TODO: add the building to north area
-                    break;
-
-                    case "south":
-                    Console.WriteLine($"You built {buildingName} in the south area.");
-                    // TODO: add the building to south area
-                    break;
-
-                    case "east":
-                    Console.WriteLine($"You built {buildingName} in the east area.");
-                    // TODO: add the building to east area
-                    break;
-
-                    case "west":
-                    Console.WriteLine($"You built {buildingName} in the west area.");
-                    // TODO: add the building to west area
-                    break;
-                }
+            
+            
+        }
         }
     }
-}
+
