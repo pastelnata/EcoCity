@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace WorldOfZuul
 {
@@ -45,13 +46,34 @@ namespace WorldOfZuul
         public void Play()
         {
             Parser parser = new();
+
             int day = 0;
+
+            Dictionary<string, int> buildingCounters = new Dictionary<string, int>
+            {
+                { "basic house", 0 },
+                { "coal energy", 0 },
+                { "food supply", 0 },
+                { "hospital", 0 },
+                { "oil supply", 0 },
+                { "eco house", 0 },
+                { "wind energy", 0 },
+                { "solar energy", 0 },
+                { "community center", 0 },
+                { "shops", 0 },
+                { "luxury house", 0 },
+                { "public transport", 0 },
+                { "fission energy", 0 },
+                { "fussion energy", 0 }
+            };
+
             PrintWelcome();
 
             bool continuePlaying = true;
             while (continuePlaying)
             {
                 Console.WriteLine(currentRoom?.ShortDescription);
+                Console.WriteLine(buildingCounters);
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
@@ -79,9 +101,10 @@ namespace WorldOfZuul
                     case "actions":
                         Console.WriteLine($"current day: {day}");
                         Console.WriteLine("skip day");
+                        Console.WriteLine("stats");
 
                         string? actionOptions = Console.ReadLine();
-                        List<string> actionsOptions = new List<string> {"skip day"};
+                        List<string> actionsOptions = new List<string> {"skip day", "stats"};
                         while (!actionsOptions.Contains(actionOptions))
                         {
                             Console.WriteLine("That is not a valid option.");
@@ -132,27 +155,193 @@ namespace WorldOfZuul
 
                             if (userInput1 == "build")
                             {
-                                
+                                List<string> buildings = new List<string> {"basic house", "coal energy", "food supply", "hospital", "oil supply", "eco house", "wind energy", "solar energy", "community center", "shops", "luxury house", "public transport", "fission energy", "fusion energy"};
                                 Console.WriteLine("What do you wish to build?");
-                                Console.WriteLine(" ");
 
-                                string building1 = "building X";
-                                string building2 = "building Y";
-
-                                Build("building X", 0, 0, 0);
-                                Console.WriteLine("");
-                                Build("building Y", 0, 0, 0);
-                                Console.Write("> ");
-
-                                List<string> building = new List<string> {building1, building2};                                
-                                string? chosenBuilding = Console.ReadLine();
-
-                                while (!building.Contains(chosenBuilding))
+                                switch (day)
                                 {
-                                    Console.WriteLine("That building does not exist.");
-                                    Console.Write("> ");
-                                    chosenBuilding = Console.ReadLine();
+                                    case 0:
+                                        if (currentRoom == rooms[0])
+                                        {
+                                            Build("basic house", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[1])
+                                        {
+                                            Build("coal energy", 0, 0, 0);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("You cannot build here yet. Try going into another room.");
+                                        }
+                                        break;
+                                    case 1:
+                                        if (currentRoom == rooms[0])
+                                        {
+                                            Build("basic house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("eco house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("hospital", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[1])
+                                        {
+                                            Build("coal energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("oil supply", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[2])
+                                        {
+                                            Build("food supply", 0, 0, 0);
+                                        }
+                                        break;
+                                    case 2:
+                                        if (currentRoom == rooms[0])
+                                        {
+                                            Build("basic house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("eco house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("hospital", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("community center", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[1])
+                                        {
+                                            Build("coal energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("oil supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("wind energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("solar energy", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[2])
+                                        {
+                                            Build("food supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("shops", 0, 0, 0);
+                                        }                                    
+                                        break;
+                                    case 3:
+                                        if (currentRoom == rooms[0])
+                                        {
+                                            Build("basic house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("eco house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("hospital", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("community center", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("luxury house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("public transport", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[1])
+                                        {
+                                            Build("coal energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("oil supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("wind energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("solar energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("fission", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[2])
+                                        {
+                                            Build("food supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("shops", 0, 0, 0);
+                                        }
+                                        break;
+                                    case 4:
+                                        if (currentRoom == rooms[0])
+                                        {
+                                            Build("basic house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("eco house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("hospital", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("community center", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("luxury house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("public transport", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[1])
+                                        {
+                                            Build("coal energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("oil supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("wind energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("solar energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("fission", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[2])
+                                        {
+                                            Build("food supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("shops", 0, 0, 0);
+                                        }
+                                        break;
+                                    case 5:
+                                        if (currentRoom == rooms[0])
+                                        {
+                                            Build("basic house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("eco house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("hospital", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("community center", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("luxury house", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("public transport", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[1])
+                                        {
+                                            Build("coal energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("oil supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("wind energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("solar energy", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("fission", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("fusion energy", 0, 0, 0);
+                                        }
+                                        else if (currentRoom == rooms[2])
+                                        {
+                                            Build("food supply", 0, 0, 0);
+                                            Console.WriteLine(" ");
+                                            Build("shops", 0, 0, 0);
+                                        }
+                                        break;
                                 }
+
+                                string? buildingOption = Console.ReadLine();
+
+                                while (!buildings.Contains(buildingOption))
+                                    {
+                                        Console.WriteLine("that is not a valid building.");
+                                        Console.Write("> ");
+                                        buildingOption = Console.ReadLine();
+                                    }
+
+                                if (buildingCounters.ContainsKey(buildingOption))
+                                    {
+                                        buildingCounters[buildingOption]++;
+                                        Console.WriteLine($"you have sucessfully built {buildingOption}");
+                                    }                       
                             }
 
                             if (userInput1 == "demolish")
@@ -278,13 +467,11 @@ namespace WorldOfZuul
             Console.WriteLine($"Cost: {cost}");
             Console.WriteLine($"Energy consumption: {energyConsumption}");
             Console.WriteLine($"Pollution: {pollution}");
-
         }
 
-        private static void BuildPlace()
+        private static void PlaceBuilding(string buildingName)
         {
-            
-            
+            Console.WriteLine($"you have successfuly built {buildingName}");
         }
 
         private static void PrintMap(Room currentRoom,Room[] rooms)
