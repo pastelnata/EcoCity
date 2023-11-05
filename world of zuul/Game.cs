@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -17,31 +18,30 @@ namespace WorldOfZuul
         {
             CreateRooms();
         }
-
         private void CreateRooms()
         {
             Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
-            Room? northside = new("Northside", "You are standing in the Northside of your city.");
+            Room? residence = new("residence", "You are standing in the residence area of your city.");
             Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
             Room? westside = new("Westside", "You are now located in the Westside of your city.");
             Room? centre = new("Centre", "You are standing in the centre.");
-            Room? eastside = new("Eastside", "You are now located in the Eastside of your city.");
+            Room? energy = new("Eastside", "You are now located in the energy area of your city.");
             Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
-            Room? southside = new("Southside", "You are now located in the Southside of your city.");
+            Room? moneymaker = new("moneymaker", "You are now located in the moneymaker area of your city.");
             Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
-            rooms = new Room[] {northwestside, northside, northeastside, westside, centre, eastside, southwestside, southside, southeastside};
+            rooms = new Room[] {northwestside, residence, northeastside, westside, centre, energy, southwestside, moneymaker, southeastside};
 
             // room.SetExits(North, East, South, West)
-            northwestside.SetExits(null, northside, westside, null);
-            northside.SetExits(null, northeastside, centre, northwestside);
-            northeastside.SetExits(null, null, eastside, northside);
+            northwestside.SetExits(null, residence, westside, null);
+            residence.SetExits(null, northeastside, centre, northwestside);
+            northeastside.SetExits(null, null, energy, residence);
             westside.SetExits(northwestside, centre, southwestside, null);
-            centre.SetExits(northside, eastside, southside, westside); 
-            eastside.SetExits(northeastside, null, southeastside, centre);
-            southwestside.SetExits(westside, southside, null, null);
-            southside.SetExits(centre, southeastside, null, southwestside);
-            southeastside.SetExits(eastside,null , null, southside);
+            centre.SetExits(residence, energy, moneymaker, westside); 
+            energy.SetExits(northeastside, null, southeastside, centre);
+            southwestside.SetExits(westside, moneymaker, null, null);
+            moneymaker.SetExits(centre, southeastside, null, southwestside);
+            southeastside.SetExits(energy,null , null, moneymaker);
 
             currentRoom = centre;
             roomHistory.Push(currentRoom);
@@ -77,7 +77,6 @@ namespace WorldOfZuul
             while (continuePlaying)
             {
                 Console.WriteLine(currentRoom?.ShortDescription);
-                Console.WriteLine(buildingCounters);
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
@@ -132,7 +131,7 @@ namespace WorldOfZuul
                         Console.Write("> ");
                         
                         string? userInput = Console.ReadLine();
-                        List<string?> customizeOptions = new List<string?> {"energy", "infrastructure", "population"};
+                        List<string?> customizeOptions = new List<string?> {"energy", "infrastructure", "population", "Return"};
 
                         while (!customizeOptions.Contains(userInput))
                         {
@@ -169,17 +168,16 @@ namespace WorldOfZuul
                                         {
                                             Build("basic house", 0, 0, 0);
                                         }
-                                        else if (currentRoom == rooms[1])
-                                        {
-                                            Build("coal energy", 0, 0, 0);
-                                        }
                                         else
                                         {
                                             Console.WriteLine("You cannot build here yet. Try going into another room.");
+                                            Console.WriteLine("Return");
+                                            
+                                            Return();
                                         }
                                         break;
                                     case 1:
-                                        if (currentRoom == rooms[0])
+                                        if (currentRoom == rooms[1])
                                         {
                                             Build("basic house", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -187,19 +185,13 @@ namespace WorldOfZuul
                                             Console.WriteLine(" ");
                                             Build("hospital", 0, 0, 0);
                                         }
-                                        else if (currentRoom == rooms[1])
-                                        {
-                                            Build("coal energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("oil supply", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[2])
+                                        else if (currentRoom == rooms[7])
                                         {
                                             Build("food supply", 0, 0, 0);
                                         }
                                         break;
                                     case 2:
-                                        if (currentRoom == rooms[0])
+                                        if (currentRoom == rooms[1])
                                         {
                                             Build("basic house", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -209,17 +201,7 @@ namespace WorldOfZuul
                                             Console.WriteLine(" ");
                                             Build("community center", 0, 0, 0);
                                         }
-                                        else if (currentRoom == rooms[1])
-                                        {
-                                            Build("coal energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("oil supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("wind energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("solar energy", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[2])
+                                        else if (currentRoom == rooms[7])
                                         {
                                             Build("food supply", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -227,7 +209,7 @@ namespace WorldOfZuul
                                         }                                    
                                         break;
                                     case 3:
-                                        if (currentRoom == rooms[0])
+                                        if (currentRoom == rooms[1])
                                         {
                                             Build("basic house", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -241,19 +223,7 @@ namespace WorldOfZuul
                                             Console.WriteLine(" ");
                                             Build("public transport", 0, 0, 0);
                                         }
-                                        else if (currentRoom == rooms[1])
-                                        {
-                                            Build("coal energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("oil supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("wind energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("solar energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("fission", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[2])
+                                        else if (currentRoom == rooms[7])
                                         {
                                             Build("food supply", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -261,7 +231,7 @@ namespace WorldOfZuul
                                         }
                                         break;
                                     case 4:
-                                        if (currentRoom == rooms[0])
+                                        if (currentRoom == rooms[1])
                                         {
                                             Build("basic house", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -275,19 +245,7 @@ namespace WorldOfZuul
                                             Console.WriteLine(" ");
                                             Build("public transport", 0, 0, 0);
                                         }
-                                        else if (currentRoom == rooms[1])
-                                        {
-                                            Build("coal energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("oil supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("wind energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("solar energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("fission", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[2])
+                                        else if (currentRoom == rooms[7])
                                         {
                                             Build("food supply", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -295,7 +253,7 @@ namespace WorldOfZuul
                                         }
                                         break;
                                     case 5:
-                                        if (currentRoom == rooms[0])
+                                        if (currentRoom == rooms[1])
                                         {
                                             Build("basic house", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -309,21 +267,7 @@ namespace WorldOfZuul
                                             Console.WriteLine(" ");
                                             Build("public transport", 0, 0, 0);
                                         }
-                                        else if (currentRoom == rooms[1])
-                                        {
-                                            Build("coal energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("oil supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("wind energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("solar energy", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("fission", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("fusion energy", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[2])
+                                        else if (currentRoom == rooms[7])
                                         {
                                             Build("food supply", 0, 0, 0);
                                             Console.WriteLine(" ");
@@ -383,22 +327,21 @@ namespace WorldOfZuul
                         
                         break;
 
-                    case "back":
-                        Back();
+                    case "return":
+                        Return();
                         PrintMap(currentRoom, rooms);
                         break;
 
                     case "move":
-                        Console.WriteLine("write one of the following directions:");
-                        Console.WriteLine("north");
-                        Console.WriteLine("south");
-                        Console.WriteLine("east");
-                        Console.WriteLine("west");
+                        Console.WriteLine("which area of your city do you wish to go to?");
+                        Console.WriteLine("residence");
+                        Console.WriteLine("moneymaker");
+                        Console.WriteLine("energy");
                         
                         Console.Write("> ");
 
                         string? inputLine = Console.ReadLine();
-                        List<string> directions = new List<string> {"east", "south", "north", "west" };
+                        List<string> directions = new List<string> {"energy", "moneymaker", "residence", "west" };
 
                         while (!directions.Contains(inputLine) || currentRoom == null)
                         {
@@ -457,9 +400,10 @@ namespace WorldOfZuul
             Console.WriteLine();
             Console.WriteLine("Type 'move' to navigate");
             Console.WriteLine("Type 'customize' to customize your city");
-            Console.WriteLine("Type 'actions' to "); //TODO: ADD DESCRIPTION FOR ACTIONS
+            Console.WriteLine("Type 'actions' to skip a day or check your progress");
             Console.WriteLine("Type 'look' for more details.");
-            Console.WriteLine("Type 'back' to go to the previous room.");
+            Console.WriteLine("Type 'return' to go to the previous room.");
+            Console.WriteLine("Type 'back' to go back.");
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
         }
@@ -478,11 +422,11 @@ namespace WorldOfZuul
         }
 
 
-        private void Back()
+        private void Return()
         {
             if(roomHistory.Count == 1)
                 {
-                    Console.WriteLine("You can't go back from here!");
+                    Console.WriteLine("You can't return from here!");
                 }
             else
             {
