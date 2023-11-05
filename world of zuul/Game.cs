@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
@@ -8,6 +10,7 @@ namespace WorldOfZuul
     {
         private Room? currentRoom;
         private Room? previousRoom;
+        private Stack<Room?> roomHistory = new();
         private Room[] rooms = new Room[9];
 
         public Game()
@@ -41,6 +44,7 @@ namespace WorldOfZuul
             southeastside.SetExits(eastside,null , null, southside);
 
             currentRoom = centre;
+            roomHistory.Push(currentRoom);
         }
 
         public void Play()
@@ -104,7 +108,7 @@ namespace WorldOfZuul
                         Console.WriteLine("stats");
 
                         string? actionOptions = Console.ReadLine();
-                        List<string> actionsOptions = new List<string> {"skip day", "stats"};
+                        List<string?> actionsOptions = new List<string?> {"skip day", "stats"};
                         while (!actionsOptions.Contains(actionOptions))
                         {
                             Console.WriteLine("That is not a valid option.");
@@ -128,7 +132,7 @@ namespace WorldOfZuul
                         Console.Write("> ");
                         
                         string? userInput = Console.ReadLine();
-                        List<string> customizeOptions = new List<string> {"energy", "infrastructure", "population"};
+                        List<string?> customizeOptions = new List<string?> {"energy", "infrastructure", "population"};
 
                         while (!customizeOptions.Contains(userInput))
                         {
@@ -142,7 +146,7 @@ namespace WorldOfZuul
                             Console.WriteLine("build");
                             Console.WriteLine("demolish");
                             Console.Write("> ");
-                            List<string> infrastructureOptions = new List<string> {"build", "demolish"};
+                            List<string?> infrastructureOptions = new List<string?> {"build", "demolish"};
 
                             string? userInput1 = Console.ReadLine();
 
@@ -380,10 +384,8 @@ namespace WorldOfZuul
                         break;
 
                     case "back":
-                        if (previousRoom == null)
-                            Console.WriteLine("You can't go back from here!");
-                        else
-                            currentRoom = previousRoom;
+                        Back();
+                        PrintMap(currentRoom, rooms);
                         break;
 
                     case "move":
@@ -432,6 +434,7 @@ namespace WorldOfZuul
             {
                 previousRoom = currentRoom;
                 currentRoom = currentRoom?.Exits[direction];
+                roomHistory.Push(currentRoom);
             }
             else
             {
@@ -474,8 +477,22 @@ namespace WorldOfZuul
             Console.WriteLine($"you have successfuly built {buildingName}");
         }
 
-        private static void PrintMap(Room currentRoom,Room[] rooms)
+
+        private void Back()
         {
+            if(roomHistory.Count == 1)
+                {
+                    Console.WriteLine("You can't go back from here!");
+                }
+            else
+            {
+                roomHistory.Pop();
+                currentRoom = roomHistory.Peek();
+            }  
+        }
+        private static void PrintMap(Room? currentRoom,Room[] rooms)
+        {
+            Console.WriteLine();
             Console.WriteLine("Map:");
             for(int i=0; i<rooms.Length; i++)
             {
