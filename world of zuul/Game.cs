@@ -21,25 +21,25 @@ namespace WorldOfZuul
         private void CreateRooms()
         {
             Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
-            Room? residence = new("residence", "You are standing in the residence area of your city.");
+            Room? northside = new("Northside", "You are standing in the Nothside of your city.");
             Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
-            Room? westside = new("Westside", "You are now located in the Westside of your city.");
+            Room? residence = new("Residence", "You are standing in the residence area of your city");
             Room? centre = new("Centre", "You are standing in the centre.");
             Room? energy = new("Eastside", "You are now located in the energy area of your city.");
             Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
-            Room? moneymaker = new("moneymaker", "You are now located in the moneymaker area of your city.");
+            Room? moneymaker = new("Moneymaker", "You are now located in the moneymaker area of your city.");
             Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
-            rooms = new Room[] {northwestside, residence, northeastside, westside, centre, energy, southwestside, moneymaker, southeastside};
+            rooms = new Room[] {northwestside, northside, northeastside, residence, centre, energy, southwestside, moneymaker, southeastside};
 
             // room.SetExits(North, East, South, West)
-            northwestside.SetExits(null, residence, westside, null);
-            residence.SetExits(null, northeastside, centre, northwestside);
-            northeastside.SetExits(null, null, energy, residence);
-            westside.SetExits(northwestside, centre, southwestside, null);
-            centre.SetExits(residence, energy, moneymaker, westside); 
+            northwestside.SetExits(null, northside, residence, null);
+            northside.SetExits(null, northeastside, centre, northwestside);
+            northeastside.SetExits(null, null, energy, northside);
+            residence.SetExits(northwestside, centre, southwestside, null);
+            centre.SetExits(northside, energy, moneymaker, residence); 
             energy.SetExits(northeastside, null, southeastside, centre);
-            southwestside.SetExits(westside, moneymaker, null, null);
+            southwestside.SetExits(residence, moneymaker, null, null);
             moneymaker.SetExits(centre, southeastside, null, southwestside);
             southeastside.SetExits(energy,null , null, moneymaker);
 
@@ -97,7 +97,7 @@ namespace WorldOfZuul
 
                 switch(command.Name)
                 {
-                    case "look":
+                    case "describe":
                         Console.WriteLine(currentRoom?.LongDescription);
                         break;
 
@@ -333,15 +333,16 @@ namespace WorldOfZuul
                         break;
 
                     case "move":
-                        Console.WriteLine("which area of your city do you wish to go to?");
-                        Console.WriteLine("residence");
-                        Console.WriteLine("moneymaker");
-                        Console.WriteLine("energy");
+                        Console.WriteLine("which way do you wish to go?");
+                        Console.WriteLine("north");
+                        Console.WriteLine("south");
+                        Console.WriteLine("west");
+                        Console.WriteLine("east");
                         
                         Console.Write("> ");
 
                         string? inputLine = Console.ReadLine();
-                        List<string> directions = new List<string> {"energy", "moneymaker", "residence", "west" };
+                        List<string> directions = new List<string> {"north", "east", "south", "west" };
 
                         while (!directions.Contains(inputLine) || currentRoom == null)
                         {
@@ -401,7 +402,7 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'move' to navigate");
             Console.WriteLine("Type 'customize' to customize your city");
             Console.WriteLine("Type 'actions' to skip a day or check your progress");
-            Console.WriteLine("Type 'look' for more details.");
+            Console.WriteLine("Type 'describe' to see describtion of a place you are currently located in.");
             Console.WriteLine("Type 'return' to go to the previous room.");
             Console.WriteLine("Type 'back' to go back.");
             Console.WriteLine("Type 'help' to print this message again.");
