@@ -300,7 +300,7 @@ namespace WorldOfZuul
 
                         if (userInput == "population")
                         {
-                            Console.WriteLine("you have entered population");
+                            Population.DisplayPopulation();
                         }
 
                         if (userInput == "energy")
@@ -408,7 +408,7 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'quit' to exit the game.");
         }
         
-        private static void Build(string buildingName, int cost, int energyConsumption, int pollution)
+        public static void Build(string buildingName, int cost, int energyConsumption, int pollution)
         {
             Console.WriteLine($"{buildingName}");
             Console.WriteLine($"Cost: {cost}");
@@ -416,7 +416,7 @@ namespace WorldOfZuul
             Console.WriteLine($"Pollution: {pollution}");
         }
 
-        private static void PlaceBuilding(string buildingName)
+         static void PlaceBuilding(string buildingName)
         {
             Console.WriteLine($"you have successfuly built {buildingName}");
         }
