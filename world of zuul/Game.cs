@@ -30,14 +30,14 @@ namespace WorldOfZuul
             Room? moneymaker = new("Moneymaker", "You are now located in the moneymaker area of your city.");
             Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
-            rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, moneymaker, southeastside };
+            rooms = new Room[] {northwestside, northside, northeastside, residence, centre, energy, southwestside, moneymaker, southeastside};
 
             // room.SetExits(North, East, South, West)
             northwestside.SetExits(null, northside, residence, null);
             northside.SetExits(null, northeastside, centre, northwestside);
             northeastside.SetExits(null, null, energy, northside);
             residence.SetExits(northwestside, centre, southwestside, null);
-            centre.SetExits(northside, energy, moneymaker, residence);
+            centre.SetExits(northside, energy, moneymaker, residence); 
             energy.SetExits(northeastside, null, southeastside, centre);
             southwestside.SetExits(residence, moneymaker, null, null);
             moneymaker.SetExits(centre, southeastside, null, southwestside);
