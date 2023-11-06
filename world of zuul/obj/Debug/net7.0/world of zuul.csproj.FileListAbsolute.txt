@@ -110,10 +110,3 @@ C:\Users\ritab\Downloads\EcoCity-1\world of zuul\obj\Debug\net7.0\refint\world o
 C:\Users\ritab\Downloads\EcoCity-1\world of zuul\obj\Debug\net7.0\world of zuul.pdb
 C:\Users\ritab\Downloads\EcoCity-1\world of zuul\obj\Debug\net7.0\world of zuul.genruntimeconfig.cache
 C:\Users\ritab\Downloads\EcoCity-1\world of zuul\obj\Debug\net7.0\ref\world of zuul.dll
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.AssemblyInfoInputs.cache
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.AssemblyInfo.cs
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.csproj.CoreCompileInputs.cache
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.dll
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\refint\world of zuul.dll
-C:\Users\User\Desktop\EcoCity\world of zuul\obj\Debug\net7.0\world of zuul.pdb

@@ -275,14 +275,15 @@ namespace WorldOfZuul
                                         }
                                         break;
                                 }
-                                bob is an idiot. 
+
                                 string? buildingOption = Console.ReadLine();
 
                                 while (!buildings.Contains(buildingOption))
                                     {
-                                    Console.WriteLine("that is not a valid building.");
+                                        Console.WriteLine("that is not a valid building.");
                                         Console.Write("> ");
                                         buildingOption = Console.ReadLine();
+                                    }
 
                                 if (buildingCounters.ContainsKey(buildingOption))
                                     {
@@ -454,11 +455,6 @@ namespace WorldOfZuul
                 }
             }
         }
-        if (userInput == "population")
-                        {
-                            Population townPopulation = new Population();
-        Console.WriteLine($"There is {townPopulation.currentPopulation} people in the town right now");
-                        }
-}
+        }
     }
 
