@@ -125,6 +125,10 @@ namespace WorldOfZuul
             Console.WriteLine("Thank you for playing EcoCity!");
         }
 
+        /*-------------------------------------------------------------------------------------
+            Handles user commands.
+        ---------------------------------------------------------------------------------------*/
+
         private string ValidateInput(List<string> validInputs, string? selectedInput)
         {
 
@@ -144,17 +148,22 @@ namespace WorldOfZuul
             Console.WriteLine("current day: 0");
             Console.WriteLine("skip day");
             Console.WriteLine("stats");
+            Console.WriteLine("back");
 
             Console.Write("> ");
             string? selectedAction = Console.ReadLine();
-            List<string> validActions = new List<string> { "skip day", "stats" };
 
+            List<string> validActions = new List<string> { "skip day", "stats", "back" };
             selectedAction = ValidateInput(validActions, selectedAction);
 
             if (selectedAction == "skip day")
             {
                 Console.WriteLine("you have skipped a day.");
                 dayCounter.UpdateDay();
+            }
+            if (selectedAction == "stats")
+            {
+
             }
         }
 
@@ -165,22 +174,34 @@ namespace WorldOfZuul
             Console.WriteLine("south");
             Console.WriteLine("west");
             Console.WriteLine("east");
+            Console.WriteLine("back");
+
 
             Console.Write("> ");
-
             string? selectedDirection = Console.ReadLine();
-            List<string> validDirections = new List<string> { "north", "east", "south", "west" };
+
+            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back" };
 
             selectedDirection = ValidateInput(validDirections, selectedDirection);
 
-            Move(selectedDirection);
-            PrintMap(currentRoom, rooms);
+            if (selectedDirection != "back")
+            {
+                Move(selectedDirection);
+                PrintMap(currentRoom, rooms);
+            }
         }
 
         private void CustomizeHandler()
         {
             // TODO RITA 
+            Console.WriteLine("back");
+
         }
+
+
+        /*-------------------------------------------------------------------------------------
+            Executes commands like: move, customize, etc.
+        ---------------------------------------------------------------------------------------*/
 
         private void Move(string direction)
         {
