@@ -12,14 +12,14 @@ namespace WorldOfZuul
             LongDescription = longDesc;
         }
 
-        public void SetExits(Room? residence, Room? energy, Room? moneymaker, Room? west)
+        public void SetExits(Room? north, Room? east, Room? south, Room? west)
         {
-            SetExit("residence", residence);
-            SetExit("energy", energy);
-            SetExit("moneymaker", moneymaker);
+            SetExit("north", north);
+            SetExit("east", east);
+            SetExit("south", south);
             SetExit("west", west);
         }
-
+        
         public void SetExit(string direction, Room? neighbor)
         {
             if (neighbor != null)
