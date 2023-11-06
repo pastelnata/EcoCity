@@ -14,6 +14,8 @@ namespace WorldOfZuul
         private Stack<Room?> roomHistory = new();
         private Room[] rooms = new Room[9];
 
+        private DayProgress dayCounter = new DayProgress(0);
+
         public Game()
         {
             CreateRooms();
@@ -30,18 +32,18 @@ namespace WorldOfZuul
             Room? moneymaker = new("Moneymaker", "You are now located in the moneymaker area of your city.");
             Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
-            rooms = new Room[] {northwestside, northside, northeastside, residence, centre, energy, southwestside, moneymaker, southeastside};
+            rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, moneymaker, southeastside };
 
             // room.SetExits(North, East, South, West)
             northwestside.SetExits(null, northside, residence, null);
             northside.SetExits(null, northeastside, centre, northwestside);
             northeastside.SetExits(null, null, energy, northside);
             residence.SetExits(northwestside, centre, southwestside, null);
-            centre.SetExits(northside, energy, moneymaker, residence); 
+            centre.SetExits(northside, energy, moneymaker, residence);
             energy.SetExits(northeastside, null, southeastside, centre);
             southwestside.SetExits(residence, moneymaker, null, null);
             moneymaker.SetExits(centre, southeastside, null, southwestside);
-            southeastside.SetExits(energy, null, null, moneymaker); 
+            southeastside.SetExits(energy, null, null, moneymaker);
 
             currentRoom = centre;
             roomHistory.Push(currentRoom);
@@ -53,6 +55,8 @@ namespace WorldOfZuul
 
             PrintWelcome();
 
+            dayCounter.InitializeTimer();
+
             bool continuePlaying = true;
             while (continuePlaying)
             {
@@ -60,6 +64,12 @@ namespace WorldOfZuul
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
+
+                if (dayCounter.currentDay == 6)
+                {
+                    Console.WriteLine("Game over! You have reached the day limit.");
+                    break;
+                }
 
                 if (string.IsNullOrEmpty(input))
                 {
@@ -122,7 +132,7 @@ namespace WorldOfZuul
             {
                 Console.WriteLine("That is not valid option.");
                 Console.Write("> ");
-                selectedInput = Console.ReadLine(); 
+                selectedInput = Console.ReadLine();
             }
 
             return selectedInput;
@@ -135,6 +145,7 @@ namespace WorldOfZuul
             Console.WriteLine("skip day");
             Console.WriteLine("stats");
 
+            Console.Write("> ");
             string? selectedAction = Console.ReadLine();
             List<string> validActions = new List<string> { "skip day", "stats" };
 
@@ -142,8 +153,8 @@ namespace WorldOfZuul
 
             if (selectedAction == "skip day")
             {
-                Console.WriteLine("you have skipped a day."); 
-                Console.WriteLine("current day:");
+                Console.WriteLine("you have skipped a day.");
+                dayCounter.UpdateDay();
             }
         }
 
