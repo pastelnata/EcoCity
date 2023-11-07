@@ -184,7 +184,7 @@ namespace WorldOfZuul
             }
             if (selectedCustomizeOption == "energy")
             {
-                Energy();
+                EnergyHandler();
             }
             if (selectedCustomizeOption == "population")
             {
@@ -243,9 +243,45 @@ namespace WorldOfZuul
             }
         }
 
-        private void Energy()
+        private void EnergyHandler()
         {
             Console.WriteLine("energy");
+            
+            Energy coalPlant = new Energy();
+            coalPlant.DailyPriceCalc(100);
+            coalPlant.BuildPrice(3000);
+            coalPlant.IncomeCalc(25);
+
+            Energy oilSupply = new Energy();
+            oilSupply.DailyPriceCalc(150);
+            oilSupply.BuildPrice(4000);
+            oilSupply.IncomeCalc(50);
+
+            Energy wind = new Energy();
+            wind.DailyPriceCalc(30);
+            wind.BuildPrice(2500);
+            wind.IncomeCalc(30);
+
+            Energy solar = new Energy();
+            solar.DailyPriceCalc(20);
+            solar.BuildPrice(2000);
+            solar.IncomeCalc(25);
+
+            Energy fission = new Energy();
+            fission.DailyPriceCalc(200);
+            fission.BuildPrice(5000);
+            fission.IncomeCalc(100);
+
+            Energy fusion = new Energy();
+            fusion.DailyPriceCalc(100);
+            fusion.BuildPrice(10000);
+            fusion.IncomeCalc(200);
+
+            if(coalPlant.Income == 0 &&  oilSupply.Income == 0 && wind.Income == 0 && solar.Income == 0 && fission.Income == 0 && fusion.Income == 0)
+            {
+                Console.WriteLine("You are currently not using any type of energy");
+            }
+
         }
 
         private void Move(string direction)
