@@ -140,20 +140,24 @@ namespace WorldOfZuul
             }
 
             return selectedInput;
+        }
 
+        private void OptionPrinter(List<string> Options)
+        {
+            for (int i = 0; i < Options.Count; i++)
+            {
+                Console.WriteLine(Options[i]);
+            }
         }
 
         private void ActionHandler()
         {
-            Console.WriteLine("current day: 0");
-            Console.WriteLine("skip day");
-            Console.WriteLine("stats");
-            Console.WriteLine("back");
-
+            List<string> validActions = new List<string> { "skip day", "stats", "back" };
+            OptionPrinter(validActions);
+            
             Console.Write("> ");
             string? selectedAction = Console.ReadLine();
-
-            List<string> validActions = new List<string> { "skip day", "stats", "back" };
+            
             selectedAction = ValidateInput(validActions, selectedAction);
 
             if (selectedAction == "skip day")
@@ -169,18 +173,11 @@ namespace WorldOfZuul
 
         private void MoveHandler()
         {
-            Console.WriteLine("which way do you wish to go?");
-            Console.WriteLine("north");
-            Console.WriteLine("south");
-            Console.WriteLine("west");
-            Console.WriteLine("east");
-            Console.WriteLine("back");
-
+            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back" };
+            OptionPrinter(validDirections);
 
             Console.Write("> ");
             string? selectedDirection = Console.ReadLine();
-
-            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back" };
 
             selectedDirection = ValidateInput(validDirections, selectedDirection);
 
@@ -193,8 +190,26 @@ namespace WorldOfZuul
 
         private void CustomizeHandler()
         {
-            // TODO RITA 
-            Console.WriteLine("back");
+            List<string> validCustomizeOptions = new List<string> {"infrastructure", "energy", "population", "back"};
+            OptionPrinter(validCustomizeOptions);
+
+            Console.Write("> ");
+            string? selectedCustomizeOption = Console.ReadLine();
+
+            ValidateInput(validCustomizeOptions, selectedCustomizeOption);
+
+            if (selectedCustomizeOption == "infrastructure")
+            {
+                Infrastructure();
+            }
+            if (selectedCustomizeOption == "energy")
+            {
+                Energy();
+            }
+            if (selectedCustomizeOption == "population")
+            {
+                Population.DisplayPopulation();
+            }
 
         }
 
@@ -203,6 +218,22 @@ namespace WorldOfZuul
             Executes commands like: move, customize, etc.
         ---------------------------------------------------------------------------------------*/
 
+        private void Infrastructure()
+        {
+            List<string> validInfrastructureOptions = new List<string>{"build", "demolish", "back"};
+            OptionPrinter(validInfrastructureOptions);
+
+            Console.Write("> ");
+            string? selectedInfrastructureOption = Console.ReadLine();
+
+            ValidateInput(validInfrastructureOptions, selectedInfrastructureOption);
+            
+        }
+
+        private void Energy()
+        {
+            Console.WriteLine("energy");
+        }
         private void Move(string direction)
         {
             if (currentRoom?.Exits.ContainsKey(direction) == true)
@@ -248,10 +279,6 @@ namespace WorldOfZuul
             Console.WriteLine($"Pollution: {pollution}");
         }
 
-        private static void PlaceBuilding(string buildingName)
-        {
-            Console.WriteLine($"you have successfuly built {buildingName}");
-        }
 
         private void Return()
         {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ritab\\Downloads\\EcoCity-3\\EcoCity-3\\world of zuul\\world of zuul.csproj": {}
+    "C:\\Users\\ritab\\Downloads\\EcoCity-1\\world of zuul\\world of zuul.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ritab\\Downloads\\EcoCity-3\\EcoCity-3\\world of zuul\\world of zuul.csproj": {
+    "C:\\Users\\ritab\\Downloads\\EcoCity-1\\world of zuul\\world of zuul.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ritab\\Downloads\\EcoCity-3\\EcoCity-3\\world of zuul\\world of zuul.csproj",
+        "projectUniqueName": "C:\\Users\\ritab\\Downloads\\EcoCity-1\\world of zuul\\world of zuul.csproj",
         "projectName": "world of zuul",
-        "projectPath": "C:\\Users\\ritab\\Downloads\\EcoCity-3\\EcoCity-3\\world of zuul\\world of zuul.csproj",
+        "projectPath": "C:\\Users\\ritab\\Downloads\\EcoCity-1\\world of zuul\\world of zuul.csproj",
         "packagesPath": "C:\\Users\\ritab\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ritab\\Downloads\\EcoCity-3\\EcoCity-3\\world of zuul\\obj\\",
+        "outputPath": "C:\\Users\\ritab\\Downloads\\EcoCity-1\\world of zuul\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ritab\\AppData\\Roaming\\NuGet\\NuGet.Config"
