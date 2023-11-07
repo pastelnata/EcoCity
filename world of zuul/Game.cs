@@ -245,7 +245,9 @@ namespace WorldOfZuul
 
         private void EnergyHandler()
         {
-            Console.WriteLine("energy");
+
+            //TODO FIX THISS PLEASEEEEEEEEEEEEEEEEEEEEEEEEE
+            /*Console.WriteLine("energy");
             
             Energy coalPlant = new Energy();
             coalPlant.DailyPriceCalc(100);
@@ -281,7 +283,7 @@ namespace WorldOfZuul
             {
                 Console.WriteLine("You are currently not using any type of energy");
             }
-
+        */
         }
 
         private void Move(string direction)

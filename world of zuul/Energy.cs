@@ -1,5 +1,7 @@
 ﻿namespace WorldOfZuul
 {
+    //FIXXXXXXXXXXXXXXXXX
+    /*
     public class Energy
     {
         public double Income;
@@ -20,5 +22,5 @@
             Price = price;
         }
     }
-
-}
+*/
+} 
