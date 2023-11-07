@@ -1,23 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
+using world_of_zuul;
 
-namespace world_of_zuul
+namespace WorldOfZuul
 {
-   public class Pollution
+    public class Population
     {
-
-            public int StartPollution = 0;
-            public int MaxPollution = 150;
-            int IncreasePollution(int amount)
+        Pollution pollution = new Pollution();
+        public static int currentPopulation { get; private set; }
+        public void IncreasePopulation(int amount)
+        {
+            currentPopulation += amount;
+            //if (Day = Passed)
             {
-                return StartPollution + amount;
+                Console.WriteLine("The day passed and your town got 50 more people");
             }
-            int DecreasePollution(int amount)
+        }
+
+        public void DecreasePopulation(int amount)
+        {
+            Pollution pollution = new Pollution();
+            amount = 200;
+            currentPopulation -= amount;
+
+            if (pollution.StartPollution > pollution.MaxPollution)
             {
-                return StartPollution - amount;
-            }               
+                Console.WriteLine($"You have exceeded the limit and have lost {currentPopulation}");
+            }
+        }
+        public static void DisplayPopulation()
+        {
+            currentPopulation = 500;
+            Console.WriteLine($"There is {Population.currentPopulation} people");
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace WorldOfZuul
 {
     public class Game
     {
-        private Room? currentRoom;
+        public static Room? currentRoom;
         private Room? previousRoom;
         private Stack<Room?> roomHistory = new();
         private Room[] rooms = new Room[9];
@@ -25,30 +25,29 @@ namespace WorldOfZuul
             Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
             Room? northside = new("Northside", "You are standing in the Nothside of your city.");
             Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
-            Room? residence = new("Residence", "You are standing in the residence area of your city");
+            Residence? residence = new("Residence", "You are standing in the residence area of your city");
             Room? centre = new("Centre", "You are standing in the centre.");
-            Room? energy = new("Eastside", "You are now located in the energy area of your city.");
+            Energy? energy = new("Energy", "You are now located in the energy area of your city.");
             Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
-            Room? moneymaker = new("Moneymaker", "You are now located in the moneymaker area of your city.");
+            Commercial? commercial = new("commercial", "You are now located in the commercial area of your city.");
             Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
 
-            rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, moneymaker, southeastside };
+            rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, commercial, southeastside };
 
             // room.SetExits(North, East, South, West)
             northwestside.SetExits(null, northside, residence, null);
             northside.SetExits(null, northeastside, centre, northwestside);
             northeastside.SetExits(null, null, energy, northside);
             residence.SetExits(northwestside, centre, southwestside, null);
-            centre.SetExits(northside, energy, moneymaker, residence);
+            centre.SetExits(northside, energy, commercial, residence);
             energy.SetExits(northeastside, null, southeastside, centre);
-            southwestside.SetExits(residence, moneymaker, null, null);
-            moneymaker.SetExits(centre, southeastside, null, southwestside);
-            southeastside.SetExits(energy, null, null, moneymaker);
+            southwestside.SetExits(residence, commercial, null, null);
+            commercial.SetExits(centre, southeastside, null, southwestside);
+            southeastside.SetExits(energy, null, null, commercial);
 
             currentRoom = centre;
             roomHistory.Push(currentRoom);
         }
-
         public void Play()
         {
             Parser parser = new();
@@ -129,35 +128,14 @@ namespace WorldOfZuul
             Handles user commands.
         ---------------------------------------------------------------------------------------*/
 
-        private string ValidateInput(List<string> validInputs, string? selectedInput)
-        {
-
-            while (selectedInput == null || !validInputs.Contains(selectedInput))
-            {
-                Console.WriteLine("That is not valid option.");
-                Console.Write("> ");
-                selectedInput = Console.ReadLine();
-            }
-
-            return selectedInput;
-        }
-
-        private void OptionPrinter(List<string> Options)
-        {
-            for (int i = 0; i < Options.Count; i++)
-            {
-                Console.WriteLine(Options[i]);
-            }
-        }
-
         private void ActionHandler()
         {
             List<string> validActions = new List<string> { "skip day", "stats", "back" };
-            OptionPrinter(validActions);
-            
+            PrintUserOptions(validActions);
+
             Console.Write("> ");
             string? selectedAction = Console.ReadLine();
-            
+
             selectedAction = ValidateInput(validActions, selectedAction);
 
             if (selectedAction == "skip day")
@@ -174,7 +152,7 @@ namespace WorldOfZuul
         private void MoveHandler()
         {
             List<string> validDirections = new List<string> { "north", "east", "south", "west", "back" };
-            OptionPrinter(validDirections);
+            PrintUserOptions(validDirections);
 
             Console.Write("> ");
             string? selectedDirection = Console.ReadLine();
@@ -190,17 +168,19 @@ namespace WorldOfZuul
 
         private void CustomizeHandler()
         {
-            List<string> validCustomizeOptions = new List<string> {"infrastructure", "energy", "population", "back"};
-            OptionPrinter(validCustomizeOptions);
+            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "population", "back" };
+            PrintUserOptions(validCustomizeOptions);
 
             Console.Write("> ");
             string? selectedCustomizeOption = Console.ReadLine();
 
-            ValidateInput(validCustomizeOptions, selectedCustomizeOption);
+            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption);
 
             if (selectedCustomizeOption == "infrastructure")
             {
-                Infrastructure();
+                Console.WriteLine("These are the current buildings you have in this room:");
+                DisplayBuildingsInTheCurrentRoom();
+                InfrastructureHandler();
             }
             if (selectedCustomizeOption == "energy")
             {
@@ -212,28 +192,62 @@ namespace WorldOfZuul
             }
 
         }
+        private void InfrastructureHandler()
+        {
+            List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back" };
+            PrintUserOptions(validInfrastructureOptions);
+
+            Console.Write("> ");
+            string? selectedInfrastructureOption = Console.ReadLine();
+
+            selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption);
+
+            if (selectedInfrastructureOption == "build")
+            {
+                Build();
+            }
+            if (selectedInfrastructureOption == "demolish")
+            {
+                Demolish();
+            }
+        }
+
 
 
         /*-------------------------------------------------------------------------------------
             Executes commands like: move, customize, etc.
         ---------------------------------------------------------------------------------------*/
-
-        private void Infrastructure()
+        private void Build()
         {
-            List<string> validInfrastructureOptions = new List<string>{"build", "demolish", "back"};
-            OptionPrinter(validInfrastructureOptions);
+            Console.WriteLine("What building do you wish to build out of these options?");
+            DisplayBuildingsInTheCurrentRoom();
 
             Console.Write("> ");
-            string? selectedInfrastructureOption = Console.ReadLine();
+            string? buildingChoice = Console.ReadLine();
+            if (buildingChoice != null)
+            {
+                currentRoom?.AddBuildingToRoom(buildingChoice);
+            }
+        }
 
-            ValidateInput(validInfrastructureOptions, selectedInfrastructureOption);
-            
+        private void Demolish()
+        {
+            Console.WriteLine("What building do you wish to demolish out of these options?");
+            DisplayBuildingsInTheCurrentRoom();
+
+            Console.Write("> ");
+            string? buildingChoice = Console.ReadLine();
+            if (buildingChoice != null)
+            {
+                currentRoom?.RemoveBuildingFromRoom(buildingChoice);
+            }
         }
 
         private void Energy()
         {
             Console.WriteLine("energy");
         }
+
         private void Move(string direction)
         {
             if (currentRoom?.Exits.ContainsKey(direction) == true)
@@ -271,12 +285,28 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'quit' to exit the game.");
         }
 
-        private static void Build(string buildingName, int cost, int energyConsumption, int pollution)
+        public static void GetRoomBuildingsInfo(Dictionary<string, int> buildings)
         {
-            Console.WriteLine($"{buildingName}");
-            Console.WriteLine($"Cost: {cost}");
-            Console.WriteLine($"Energy consumption: {energyConsumption}");
-            Console.WriteLine($"Pollution: {pollution}");
+            foreach (var building in buildings)
+            {
+                Console.WriteLine(buildings.Keys);
+            }
+        }
+
+        private static void DisplayBuildingsInTheCurrentRoom()
+        {
+            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
+            if (buildingsInRoom == null || buildingsInRoom.Count() < 1)
+            {
+                Console.WriteLine("There are no buildings here.");
+            }
+            else
+            {
+                foreach (KeyValuePair<string, int> building in buildingsInRoom)
+                {
+                    Console.WriteLine("{0}: {1}", building.Key, building.Value);
+                }
+            }
         }
 
 
@@ -312,6 +342,31 @@ namespace WorldOfZuul
                 {
                     Console.WriteLine();
                 }
+            }
+        }
+
+        /*-------------------------------------------------------------------------------------
+           Util - functions to avoid code repetition.
+       ---------------------------------------------------------------------------------------*/
+
+        private string ValidateInput(List<string> validInputs, string? selectedInput)
+        {
+
+            while (selectedInput == null || !validInputs.Contains(selectedInput))
+            {
+                Console.WriteLine("That is not valid option.");
+                Console.Write("> ");
+                selectedInput = Console.ReadLine();
+            }
+
+            return selectedInput;
+        }
+
+        private void PrintUserOptions(List<string> Options)
+        {
+            for (int i = 0; i < Options.Count; i++)
+            {
+                Console.WriteLine(Options[i]);
             }
         }
     }
