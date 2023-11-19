@@ -11,7 +11,7 @@ namespace world_of_zuul
 
             public int StartPollution = 0;
             public int MaxPollution = 150;
-            int IncreasePollution(int amount)
+            public int IncreasePollution(int amount)
             {
                 return StartPollution + amount;
             }

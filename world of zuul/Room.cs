@@ -8,8 +8,7 @@ namespace WorldOfZuul
         public string LongDescription { get; private set; }
         public Dictionary<string, Room> Exits { get; private set; } = new();
 
-        public Dictionary<string, int> buildings { get; private set; } = new();
-
+        public List<string> buildings { get; private set; } = new();
         public Room(string shortDesc, string longDesc)
         {
             ShortDescription = shortDesc;
@@ -33,7 +32,7 @@ namespace WorldOfZuul
 
         public bool VerifyIfValidBuildingType(string buildingName)
         {
-            if (buildings.ContainsKey(buildingName))
+            if (buildings.Contains(buildingName))
             {
                 return true;
             }
@@ -45,9 +44,9 @@ namespace WorldOfZuul
 
         public void RemoveBuildingFromRoom(string building)
         {
-            if (VerifyIfValidBuildingType(building) & buildings[building] > 0)
+            if (VerifyIfValidBuildingType(building))
             {
-                buildings[building]--;
+                buildings.Remove(building);
                 Console.WriteLine($"you have successfully demolished the building {building}!");
                 return;
             }
@@ -58,7 +57,7 @@ namespace WorldOfZuul
         {
             if (VerifyIfValidBuildingType(building))
             {
-                buildings[building]++;
+                buildings.Add(building);
                 Console.WriteLine($"you have successfully added the building {building}!");
                 return;
             }
@@ -70,12 +69,12 @@ namespace WorldOfZuul
     {
         public Residence(string shortDesc, string longDesc) : base(shortDesc, longDesc)
         {
-            buildings.Add("basic house", 0);
-            buildings.Add("hospital", 0);
-            buildings.Add("eco house", 0);
-            buildings.Add("community center", 0);
-            buildings.Add("luxury house", 0);
-            buildings.Add("public transport", 0);
+            buildings.Add("basic house");
+            buildings.Add("hospital");
+            buildings.Add("eco house");
+            buildings.Add("community center");
+            buildings.Add("luxury house");
+            buildings.Add("public transport");
         }
     }
 
@@ -83,12 +82,7 @@ namespace WorldOfZuul
     {
         public Energy(string shortDesc, string longDesc) : base(shortDesc, longDesc)
         {
-            buildings.Add("coal energy", 0);
-            buildings.Add("oil supply", 0);
-            buildings.Add("wind energy", 0);
-            buildings.Add("solar energy", 0);
-            buildings.Add("fision energy", 0);
-            buildings.Add("fussion energy", 0);
+
         }
     }
 
@@ -96,8 +90,8 @@ namespace WorldOfZuul
     {
         public Commercial(string shortDesc, string longDesc) : base(shortDesc, longDesc)
         {
-            buildings.Add("food supply", 0);
-            buildings.Add("shops", 0);
+            buildings.Add("food supply");
+            buildings.Add("shops");
         }
     }
 }

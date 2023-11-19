@@ -16,6 +16,8 @@ namespace WorldOfZuul
 
         private DayProgress dayCounter = new DayProgress(0);
 
+        public EnergyBuilding energy = new EnergyBuilding();
+
         public Game()
         {
             CreateRooms();
@@ -184,7 +186,9 @@ namespace WorldOfZuul
             }
             if (selectedCustomizeOption == "energy")
             {
-                EnergyHandler();
+                Console.WriteLine("You currently have these buildings in this room:");
+                energy.DisplayEnergies();
+                energy.EnergyHandler();
             }
             if (selectedCustomizeOption == "population")
             {
@@ -217,6 +221,7 @@ namespace WorldOfZuul
         /*-------------------------------------------------------------------------------------
             Executes commands like: move, customize, etc.
         ---------------------------------------------------------------------------------------*/
+
         private void Build()
         {
             Console.WriteLine("What building do you wish to build out of these options?");
@@ -230,6 +235,11 @@ namespace WorldOfZuul
             }
         }
 
+        public void AvailableBuldings()
+        {
+            Console.WriteLine();
+        }
+
         private void Demolish()
         {
             Console.WriteLine("What building do you wish to demolish out of these options?");
@@ -241,49 +251,6 @@ namespace WorldOfZuul
             {
                 currentRoom?.RemoveBuildingFromRoom(buildingChoice);
             }
-        }
-
-        private void EnergyHandler()
-        {
-
-            //TODO FIX THISS PLEASEEEEEEEEEEEEEEEEEEEEEEEEE
-            /*Console.WriteLine("energy");
-            
-            Energy coalPlant = new Energy();
-            coalPlant.DailyPriceCalc(100);
-            coalPlant.BuildPrice(3000);
-            coalPlant.IncomeCalc(25);
-
-            Energy oilSupply = new Energy();
-            oilSupply.DailyPriceCalc(150);
-            oilSupply.BuildPrice(4000);
-            oilSupply.IncomeCalc(50);
-
-            Energy wind = new Energy();
-            wind.DailyPriceCalc(30);
-            wind.BuildPrice(2500);
-            wind.IncomeCalc(30);
-
-            Energy solar = new Energy();
-            solar.DailyPriceCalc(20);
-            solar.BuildPrice(2000);
-            solar.IncomeCalc(25);
-
-            Energy fission = new Energy();
-            fission.DailyPriceCalc(200);
-            fission.BuildPrice(5000);
-            fission.IncomeCalc(100);
-
-            Energy fusion = new Energy();
-            fusion.DailyPriceCalc(100);
-            fusion.BuildPrice(10000);
-            fusion.IncomeCalc(200);
-
-            if(coalPlant.Income == 0 &&  oilSupply.Income == 0 && wind.Income == 0 && solar.Income == 0 && fission.Income == 0 && fusion.Income == 0)
-            {
-                Console.WriteLine("You are currently not using any type of energy");
-            }
-        */
         }
 
         private void Move(string direction)
@@ -331,18 +298,18 @@ namespace WorldOfZuul
             }
         }
 
-        private static void DisplayBuildingsInTheCurrentRoom()
+        public static void DisplayBuildingsInTheCurrentRoom()
         {
-            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
+            List<string>? buildingsInRoom = currentRoom?.buildings;
             if (buildingsInRoom == null || buildingsInRoom.Count() < 1)
             {
                 Console.WriteLine("There are no buildings here.");
             }
             else
             {
-                foreach (KeyValuePair<string, int> building in buildingsInRoom)
+                foreach (string building in buildingsInRoom)
                 {
-                    Console.WriteLine("{0}: {1}", building.Key, building.Value);
+                    Console.WriteLine(building);
                 }
             }
         }
