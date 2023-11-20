@@ -153,7 +153,7 @@ namespace WorldOfZuul
         {
             bool move = true;
             List<string> validDirections = new List<string> { "north", "east", "south", "west", "back" };
-            while (move = true)
+            while (move)
             {
                 Console.WriteLine("Move: ");
 

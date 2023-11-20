@@ -5,7 +5,6 @@ namespace WorldOfZuul
 {
     public class Population
     {
-        Pollution pollution = new Pollution();
 
         public int populationGrow = 50;
         public int startingPopulation = 500;
@@ -14,13 +13,7 @@ namespace WorldOfZuul
        
         public void DecreasePopulation(int amount = 200)
         {
-            Pollution pollution = new Pollution();
-            startingPopulation -= amount;
-
-            if (pollution.StartPollution > pollution.MaxPollution)
-            {
-                Console.WriteLine($"You have exceeded the limit and have lost {currentPopulation}");
-            }
+           
         }
         public void IncreasePopulation()
         {

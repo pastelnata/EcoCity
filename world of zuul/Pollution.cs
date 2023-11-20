@@ -6,18 +6,35 @@ using System.Threading.Tasks;
 
 namespace world_of_zuul
 {
-   public class Pollution
+    public static class Pollution
     {
 
-            public int StartPollution = 0;
-            public int MaxPollution = 150;
-            int IncreasePollution(int amount)
+        public static int pollutionLevel = 0;
+        public static int maxPollution = 6075;
+        public static int PollutionLevel
+        {
+            get { return pollutionLevel; }
+            set
             {
-                return StartPollution + amount;
+                // Checks if pollution limit was exceeded each time the pollution level is changed
+                if (value > maxPollution)
+                {
+                    Console.WriteLine("Pollution limit exceeded! You lost...");
+                }
+
+                pollutionLevel = value;
             }
-            int DecreasePollution(int amount)
-            {
-                return StartPollution - amount;
-            }               
+        }
+
+        //Changes Amount of pollution by "amount"
+        public static void ChangePollution(int amount)
+        {
+            PollutionLevel += amount;
+        }
+
+        public static void DisplayPollution()
+        {
+            Console.WriteLine(pollutionLevel);
+        }
     }
 }

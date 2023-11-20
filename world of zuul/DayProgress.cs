@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Timers;
+using world_of_zuul;
 using WorldOfZuul;
 
 public class DayProgress
@@ -37,7 +38,10 @@ public class DayProgress
      
             currentDay++;
             Console.WriteLine();
-            Console.WriteLine($"New day: | {currentDay}  | population: | {population.startingPopulation} |");
+            Console.Write($"New day: | {currentDay}  | population: | {population.startingPopulation}");
+            Console.Write($" | pollution: | ");
+            Pollution.DisplayPollution();
+
         }
         timer.Stop();
         timer.Start();
