@@ -1,5 +1,6 @@
 using System;
 using System.Timers;
+using WorldOfZuul;
 
 class DayProgress
 {
@@ -26,7 +27,9 @@ class DayProgress
         if (currentDay <= 5)
         {
             currentDay++;
+            Building.DailyMoneyManager();
             Console.WriteLine($"A day has passed. Current day: {currentDay}");
+            Console.WriteLine($"You now have: {Game.currentMoney} euros.");
         }
         timer.Stop();
         timer.Start();

@@ -8,7 +8,7 @@ namespace WorldOfZuul
         public string LongDescription { get; private set; }
         public Dictionary<string, Room> Exits { get; private set; } = new();
 
-        public Dictionary<string, int> buildings { get; private set; } = new();
+        public Dictionary<string, int> buildings { get; set; } = new();
 
         public Room(string shortDesc, string longDesc)
         {
@@ -29,7 +29,6 @@ namespace WorldOfZuul
             if (neighbor != null)
                 Exits[direction] = neighbor;
         }
-
 
         public bool VerifyIfValidBuildingType(string buildingName)
         {
@@ -64,6 +63,22 @@ namespace WorldOfZuul
             }
             Console.WriteLine($"{building} is not a valid building for this room.");
         }
+
+        public static void DisplayBuildingsInTheCurrentRoom()
+    {
+        Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
+        if (buildingsInRoom == null || buildingsInRoom.Count() < 1)
+        {
+            Console.WriteLine("There are no buildings here.");
+        }
+        else
+        {
+            foreach (KeyValuePair<string, int> building in buildingsInRoom)
+            {
+                Console.WriteLine("{0}: {1}", building.Key, building.Value);
+            }
+        }
+    }
     }
 
     public class Residence : Room
@@ -87,8 +102,8 @@ namespace WorldOfZuul
             buildings.Add("oil supply", 0);
             buildings.Add("wind energy", 0);
             buildings.Add("solar energy", 0);
-            buildings.Add("fision energy", 0);
-            buildings.Add("fussion energy", 0);
+            buildings.Add("fission energy", 0);
+            buildings.Add("fusion energy", 0);
         }
     }
 
