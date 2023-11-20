@@ -13,7 +13,7 @@ namespace WorldOfZuul
         private Room? previousRoom;
         private Stack<Room?> roomHistory = new();
         private Room[] rooms = new Room[9];
-
+        Population population = new Population();
         private DayProgress dayCounter = new DayProgress(0);
 
         public Game()
@@ -203,7 +203,8 @@ namespace WorldOfZuul
             }
             if (selectedCustomizeOption == "population")
             {
-                Population.DisplayPopulation();
+
+                population.DisplayPopulation();
             }
 
         }
