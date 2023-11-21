@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using System;
 
 namespace WorldOfZuul
 {
@@ -9,6 +10,11 @@ namespace WorldOfZuul
         public Dictionary<string, Room> Exits { get; private set; } = new();
 
         public Dictionary<string, int> buildings { get; set; } = new();
+
+        static List<string> day1Buildings = new List<string> {"food supply", "hospital", "oil supply", "eco house"};
+        static List<string> day2Buildings = new List<string> {"wind energy", "solar energy", "community center", "shops"};
+        static List<string> day3Buildings = new List<string> {"luxury house", "public transport", "fission"};
+        static List<string> day5Buildings = new List<string> {"fusion"};
 
         public Room(string shortDesc, string longDesc)
         {
@@ -64,21 +70,55 @@ namespace WorldOfZuul
             Console.WriteLine($"{building} is not a valid building for this room.");
         }
 
-        public static void DisplayBuildingsInTheCurrentRoom()
-    {
-        Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
-        if (buildingsInRoom == null || buildingsInRoom.Count() < 1)
+        public void DisplayBuildingsInTheCurrentRoom()
         {
-            Console.WriteLine("There are no buildings here.");
-        }
-        else
-        {
-            foreach (KeyValuePair<string, int> building in buildingsInRoom)
+            Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
+            if (buildingsInRoom == null || buildingsInRoom.Count() < 1 || buildingsInRoom.Values.All(value => value == -1))
             {
-                Console.WriteLine("{0}: {1}", building.Key, building.Value);
+                Console.WriteLine("There are no buildings here.");
+            }
+            else
+            {
+                foreach (KeyValuePair<string, int> building in buildingsInRoom)
+                {               
+                    if (building.Value != -1)
+                    {
+                        Console.WriteLine("{0}: {1}", building.Key, building.Value);
+                    }
+                }              
             }
         }
-    }
+
+        public void DisplaysBuildingsAvailable()
+        {
+            if (Game.currentRoom != null)
+            {
+                BuildingsAccordingToDay(1, day1Buildings);
+                BuildingsAccordingToDay(2, day2Buildings);
+                BuildingsAccordingToDay(3, day3Buildings);
+                BuildingsAccordingToDay(5, day5Buildings);
+            }
+            DisplayBuildingsInTheCurrentRoom();
+        }
+
+        private void BuildingsAccordingToDay(int day, List<string> newBuildings)
+        {
+            if (Game.dayCounter.currentDay == day)
+            {
+                UpdateBuildingAvailability(newBuildings);
+            }
+        }
+
+        private void UpdateBuildingAvailability(List<string> newAvailableBuildings) 
+        {
+            foreach (var newBuilding in newAvailableBuildings)
+            {
+                if (Game.currentRoom != null && Game.currentRoom.buildings.ContainsKey(newBuilding))
+                {
+                    buildings[newBuilding] = 0;
+                }
+            }
+        }
     }
 
     public class Residence : Room
@@ -86,11 +126,11 @@ namespace WorldOfZuul
         public Residence(string shortDesc, string longDesc) : base(shortDesc, longDesc)
         {
             buildings.Add("basic house", 0);
-            buildings.Add("hospital", 0);
-            buildings.Add("eco house", 0);
-            buildings.Add("community center", 0);
-            buildings.Add("luxury house", 0);
-            buildings.Add("public transport", 0);
+            buildings.Add("hospital", -1);
+            buildings.Add("eco house", -1);
+            buildings.Add("community center", -1);
+            buildings.Add("luxury house", -1);
+            buildings.Add("public transport", -1);
         }
     }
 
@@ -99,11 +139,11 @@ namespace WorldOfZuul
         public Energy(string shortDesc, string longDesc) : base(shortDesc, longDesc)
         {
             buildings.Add("coal energy", 0);
-            buildings.Add("oil supply", 0);
-            buildings.Add("wind energy", 0);
-            buildings.Add("solar energy", 0);
-            buildings.Add("fission energy", 0);
-            buildings.Add("fusion energy", 0);
+            buildings.Add("oil supply", -1);
+            buildings.Add("wind energy", -1);
+            buildings.Add("solar energy", -1);
+            buildings.Add("fission energy", -1);
+            buildings.Add("fusion energy", -1);
         }
     }
 
@@ -111,8 +151,8 @@ namespace WorldOfZuul
     {
         public Commercial(string shortDesc, string longDesc) : base(shortDesc, longDesc)
         {
-            buildings.Add("food supply", 0);
-            buildings.Add("shops", 0);
+            buildings.Add("food supply", -1);
+            buildings.Add("shops", -1);
         }
     }
 }

@@ -3,11 +3,6 @@ using WorldOfZuul;
 
 class Building
 {
-    int cost;
-    int pollution;
-    int population;
-    int energyConsumption;
-
     public static Dictionary<string,int> buildingCosts { get; } = new Dictionary<string, int>()
     {
         {"basic house", 500},
@@ -26,7 +21,7 @@ class Building
         {"fusion energy", 10000},
     };
 
-    public static bool CheckIfPlayerHasEnoughMoney(string buildingToBuy)
+    public static bool CanPlayerCanAffordBuilding(string buildingToBuy)
     {
         if (Game.currentMoney >= buildingCosts[buildingToBuy])
         {
@@ -39,7 +34,7 @@ class Building
         }
     }
 
-    public static void AddBuildingProfitToDailyMoneyManager(string buildingBought)
+    public static void UpdateDailyProfit(string buildingBought)
     {
         Dictionary<string, int>? buildingCount = Game.currentRoom?.buildings;
         Game.buildingProfit += Convert.ToInt32(buildingCosts[buildingBought] * 0.2);
@@ -58,14 +53,16 @@ class Building
     public static void DisplayBuildingsCosts()
     {
         Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
-        Dictionary<string, int> buildingCosts = Building.buildingCosts;
 
         if(buildingsInRoom != null)
         {
             var buildingsInRoomAndCost = buildingsInRoom.Keys.Intersect(buildingCosts.Keys);
             foreach (var building in buildingsInRoomAndCost)
             {
-                Console.WriteLine("{0}: {1} euros", building, buildingCosts[building]);
+                if (buildingsInRoom[building] != -1)
+                {
+                    Console.WriteLine("{0}: {1} euros", building, buildingCosts[building]);
+                }
             }
         }
         else
@@ -74,27 +71,6 @@ class Building
         }
     }
 }
-
-    class ResidenceBuildings : Building
-    {
-        public ResidenceBuildings()
-        {
-            
-        }
-    }
-
-    class EnergyBuildings : Building
-    {
-
-    }
-
-    class CommercialBuildings : Building
-    {
-        public CommercialBuildings()
-        {
-
-        }
-    }
 
 
 

@@ -2,10 +2,12 @@ using System;
 using System.Timers;
 using WorldOfZuul;
 
-class DayProgress
+public class DayProgress
 {
     public int currentDay { get; private set; }
     private System.Timers.Timer timer = new System.Timers.Timer(300000);
+
+    List<string> day5Buildings = new List<string> {"fusion"};
 
     public DayProgress(int day)
     {

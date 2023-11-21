@@ -17,7 +17,7 @@ namespace WorldOfZuul
         public static int currentMoney = new();
         public static int buildingProfit = new();
 
-        private static DayProgress dayCounter = new DayProgress(0);
+        public static DayProgress dayCounter = new DayProgress(0);
 
         public Game()
         {
@@ -186,7 +186,7 @@ namespace WorldOfZuul
             if (selectedCustomizeOption == "infrastructure")
             {
                 Console.WriteLine("These are the current buildings you have in this room:");
-                Room.DisplayBuildingsInTheCurrentRoom();
+                currentRoom?.DisplaysBuildingsAvailable();
                 InfrastructureHandler();
             }
             if (selectedCustomizeOption == "energy")
@@ -203,23 +203,24 @@ namespace WorldOfZuul
         {
             List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back" };
             PrintUserOptions(validInfrastructureOptions);
-
+            
             Console.Write("> ");
             string? selectedInfrastructureOption = Console.ReadLine();
 
             selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption);
 
-            if (selectedInfrastructureOption == "build")
-            {
-                Build();
-            }
-            if (selectedInfrastructureOption == "demolish")
-            {
-                Demolish();
-            }
             if (selectedInfrastructureOption == "back")
             {
                 CustomizeHandler();
+                return;
+            }
+            else if (selectedInfrastructureOption == "build")
+            {
+                Build();
+            }
+            else if (selectedInfrastructureOption == "demolish")
+            {
+                Demolish();
             }
         }
 
@@ -231,36 +232,47 @@ namespace WorldOfZuul
         private void Build()
         {
             Console.WriteLine("What building do you wish to build out of these options?");
-            Building.DisplayBuildingsCosts();
-            Console.WriteLine("back");
 
-            Console.Write("> ");
-            string? buildingChoice = Console.ReadLine();
-            
+            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
 
-            while (buildingChoice == null || currentRoom != null && !currentRoom.buildings.ContainsKey(buildingChoice))
+            if (buildingsInRoom == null || buildingsInRoom.Values.All(value => value == -1))
             {
-                Console.WriteLine("that is not a valid building.");
+                Console.WriteLine("you can't build here yet.");
+                return;
+            }
+            else
+            {
+                Building.DisplayBuildingsCosts();
+                Console.WriteLine("back");
+
                 Console.Write("> ");
-                buildingChoice = Console.ReadLine();
-            }
-            if (Building.CheckIfPlayerHasEnoughMoney(buildingChoice))
-            {
-                Building.AddBuildingProfitToDailyMoneyManager(buildingChoice);
-                Building.DeductPlayersMoney(buildingChoice);
-                currentRoom?.AddBuildingToRoom(buildingChoice);
-                Console.WriteLine($"current money: {currentMoney}");
-            }
-            if(buildingChoice == "back")
-            {
-                InfrastructureHandler();
+                string? buildingChoice = Console.ReadLine();
+
+                if(buildingChoice == "back")
+                {
+                    InfrastructureHandler();
+                    return;
+                }
+                while (buildingChoice == null || currentRoom != null && !currentRoom.buildings.ContainsKey(buildingChoice))
+                {
+                    Console.WriteLine("that is not a valid building.");
+                    Console.Write("> ");
+                    buildingChoice = Console.ReadLine();
+                }
+                if (Building.CanPlayerCanAffordBuilding(buildingChoice))
+                {
+                    Building.UpdateDailyProfit(buildingChoice);
+                    Building.DeductPlayersMoney(buildingChoice);
+                    currentRoom?.AddBuildingToRoom(buildingChoice);
+                    Console.WriteLine($"current money: {currentMoney}");
+                }
             }
         }
 
         private void Demolish()
         {
             Console.WriteLine("What building do you wish to demolish out of these options?");
-            Room.DisplayBuildingsInTheCurrentRoom();
+            currentRoom?.DisplayBuildingsInTheCurrentRoom();
             Console.WriteLine("back");
 
             Console.Write("> ");
@@ -271,7 +283,8 @@ namespace WorldOfZuul
             }
             else if(buildingChoice == "back")
             {
-                InfrastructureHandler();
+                CustomizeHandler();
+                return;
             }
         }
 
@@ -315,14 +328,6 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'back' to go back.");
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
-        }
-
-        public static void GetRoomBuildingsInfo(Dictionary<string, int> buildings)
-        {
-            foreach (var building in buildings)
-            {
-                Console.WriteLine(buildings.Keys);
-            }
         }
 
         private void Return()
