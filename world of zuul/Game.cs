@@ -13,8 +13,11 @@ namespace WorldOfZuul
         private Room? previousRoom;
         private Stack<Room?> roomHistory = new();
         private Room[] rooms = new Room[9];
-        Population population = new Population();
-        private DayProgress dayCounter = new DayProgress(0);
+
+        public static int currentMoney = new();
+        public static int buildingProfit = new();
+
+        public static DayProgress dayCounter = new DayProgress(0);
 
         public Game()
         {
@@ -25,7 +28,7 @@ namespace WorldOfZuul
             Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
             Room? northside = new("Northside", "You are standing in the Nothside of your city.");
             Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
-            Residence? residence = new("Residence", "You are standing in the residence area of your city");
+            Residence? residence = new("Residence", "You are standing in the residencial area of your city");
             Room? centre = new("Centre", "You are standing in the centre.");
             Energy? energy = new("Energy", "You are now located in the energy area of your city.");
             Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
@@ -55,6 +58,10 @@ namespace WorldOfZuul
             PrintWelcome();
 
             dayCounter.InitializeTimer();
+
+            currentMoney = 10000;
+
+            buildingProfit = 0;
 
             bool continuePlaying = true;
             while (continuePlaying)
@@ -143,9 +150,9 @@ namespace WorldOfZuul
                 Console.WriteLine("you have skipped a day.");
                 dayCounter.UpdateDay();
             }
-            if (selectedAction == "stats")
+            else if (selectedAction == "stats")
             {
-
+                Console.WriteLine($"current money: {currentMoney}");
             }
         }
 
@@ -194,7 +201,7 @@ namespace WorldOfZuul
             if (selectedCustomizeOption == "infrastructure")
             {
                 Console.WriteLine("These are the current buildings you have in this room:");
-                DisplayBuildingsInTheCurrentRoom();
+                currentRoom?.DisplaysBuildingsAvailable();
                 InfrastructureHandler();
             }
             if (selectedCustomizeOption == "energy")
@@ -212,17 +219,22 @@ namespace WorldOfZuul
         {
             List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back" };
             PrintUserOptions(validInfrastructureOptions);
-
+            
             Console.Write("> ");
             string? selectedInfrastructureOption = Console.ReadLine();
 
             selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption);
 
-            if (selectedInfrastructureOption == "build")
+            if (selectedInfrastructureOption == "back")
+            {
+                CustomizeHandler();
+                return;
+            }
+            else if (selectedInfrastructureOption == "build")
             {
                 Build();
             }
-            if (selectedInfrastructureOption == "demolish")
+            else if (selectedInfrastructureOption == "demolish")
             {
                 Demolish();
             }
@@ -237,20 +249,48 @@ namespace WorldOfZuul
         private void Build()
         {
             Console.WriteLine("What building do you wish to build out of these options?");
-            DisplayBuildingsInTheCurrentRoom();
 
-            Console.Write("> ");
-            string? buildingChoice = Console.ReadLine();
-            if (buildingChoice != null)
+            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
+
+            if (buildingsInRoom == null || buildingsInRoom.Values.All(value => value == -1))
             {
-                currentRoom?.AddBuildingToRoom(buildingChoice);
+                Console.WriteLine("you can't build here yet.");
+                return;
+            }
+            else
+            {
+                Building.DisplayBuildingsCosts();
+                Console.WriteLine("back");
+
+                Console.Write("> ");
+                string? buildingChoice = Console.ReadLine();
+
+                if(buildingChoice == "back")
+                {
+                    InfrastructureHandler();
+                    return;
+                }
+                while (buildingChoice == null || currentRoom != null && !currentRoom.buildings.ContainsKey(buildingChoice))
+                {
+                    Console.WriteLine("that is not a valid building.");
+                    Console.Write("> ");
+                    buildingChoice = Console.ReadLine();
+                }
+                if (Building.CanPlayerCanAffordBuilding(buildingChoice))
+                {
+                    Building.UpdateDailyProfit(buildingChoice);
+                    Building.DeductPlayersMoney(buildingChoice);
+                    currentRoom?.AddBuildingToRoom(buildingChoice);
+                    Console.WriteLine($"current money: {currentMoney}");
+                }
             }
         }
 
         private void Demolish()
         {
             Console.WriteLine("What building do you wish to demolish out of these options?");
-            DisplayBuildingsInTheCurrentRoom();
+            currentRoom?.DisplayBuildingsInTheCurrentRoom();
+            Console.WriteLine("back");
 
             Console.Write("> ");
             string? buildingChoice = Console.ReadLine();
@@ -258,49 +298,16 @@ namespace WorldOfZuul
             {
                 currentRoom?.RemoveBuildingFromRoom(buildingChoice);
             }
+            else if(buildingChoice == "back")
+            {
+                CustomizeHandler();
+                return;
+            }
         }
 
         private void EnergyHandler()
         {
 
-            //TODO FIX THISS PLEASEEEEEEEEEEEEEEEEEEEEEEEEE
-            /*Console.WriteLine("energy");
-            
-            Energy coalPlant = new Energy();
-            coalPlant.DailyPriceCalc(100);
-            coalPlant.BuildPrice(3000);
-            coalPlant.IncomeCalc(25);
-
-            Energy oilSupply = new Energy();
-            oilSupply.DailyPriceCalc(150);
-            oilSupply.BuildPrice(4000);
-            oilSupply.IncomeCalc(50);
-
-            Energy wind = new Energy();
-            wind.DailyPriceCalc(30);
-            wind.BuildPrice(2500);
-            wind.IncomeCalc(30);
-
-            Energy solar = new Energy();
-            solar.DailyPriceCalc(20);
-            solar.BuildPrice(2000);
-            solar.IncomeCalc(25);
-
-            Energy fission = new Energy();
-            fission.DailyPriceCalc(200);
-            fission.BuildPrice(5000);
-            fission.IncomeCalc(100);
-
-            Energy fusion = new Energy();
-            fusion.DailyPriceCalc(100);
-            fusion.BuildPrice(10000);
-            fusion.IncomeCalc(200);
-
-            if(coalPlant.Income == 0 &&  oilSupply.Income == 0 && wind.Income == 0 && solar.Income == 0 && fission.Income == 0 && fusion.Income == 0)
-            {
-                Console.WriteLine("You are currently not using any type of energy");
-            }
-        */
         }
 
         private void Move(string direction)
@@ -339,31 +346,6 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
         }
-
-        public static void GetRoomBuildingsInfo(Dictionary<string, int> buildings)
-        {
-            foreach (var building in buildings)
-            {
-                Console.WriteLine(buildings.Keys);
-            }
-        }
-
-        private static void DisplayBuildingsInTheCurrentRoom()
-        {
-            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
-            if (buildingsInRoom == null || buildingsInRoom.Count() < 1)
-            {
-                Console.WriteLine("There are no buildings here.");
-            }
-            else
-            {
-                foreach (KeyValuePair<string, int> building in buildingsInRoom)
-                {
-                    Console.WriteLine("{0}: {1}", building.Key, building.Value);
-                }
-            }
-        }
-
 
         private void Return()
         {

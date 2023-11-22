@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using System.Timers;
-using world_of_zuul;
 using WorldOfZuul;
 
 public class DayProgress
@@ -9,6 +8,8 @@ public class DayProgress
     
     public int currentDay { get; private set; }
     private System.Timers.Timer timer = new System.Timers.Timer(100);
+
+    List<string> day5Buildings = new List<string> {"fusion"};
 
     public DayProgress(int day)
     {
@@ -37,11 +38,9 @@ public class DayProgress
             }
      
             currentDay++;
-            Console.WriteLine();
-            Console.Write($"New day: | {currentDay}  | population: | {population.startingPopulation}");
-            Console.Write($" | pollution: | ");
-            Pollution.DisplayPollution();
-
+            Building.DailyMoneyManager();
+            Console.WriteLine($"A day has passed. Current day: {currentDay}");
+            Console.WriteLine($"You now have: {Game.currentMoney} euros.");
         }
         timer.Stop();
         timer.Start();
