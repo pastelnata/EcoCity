@@ -1,5 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System;
+using static world_of_zuul.Pollution;
+using static Building;
 
 namespace WorldOfZuul
 {
@@ -53,6 +55,9 @@ namespace WorldOfZuul
             if (VerifyIfValidBuildingType(building) & buildings[building] > 0)
             {
                 buildings[building]--;
+                // Pollution decrease
+                ChangePollution(-buildingPollution[building]);
+
                 Console.WriteLine($"you have successfully demolished the building {building}!");
                 return;
             }
@@ -64,6 +69,9 @@ namespace WorldOfZuul
             if (VerifyIfValidBuildingType(building))
             {
                 buildings[building]++;
+                // Pollution increase
+                ChangePollution(buildingPollution[building]);
+                
                 Console.WriteLine($"you have successfully added the building {building}!");
                 return;
             }

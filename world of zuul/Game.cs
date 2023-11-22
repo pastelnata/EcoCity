@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using static world_of_zuul.Pollution;
 
 namespace WorldOfZuul
 {
@@ -153,6 +154,9 @@ namespace WorldOfZuul
             else if (selectedAction == "stats")
             {
                 Console.WriteLine($"current money: {currentMoney}");
+                Console.Write("Pollution: ");
+                DisplayPollution();
+                
             }
         }
 
@@ -210,8 +214,6 @@ namespace WorldOfZuul
             }
             if (selectedCustomizeOption == "population")
             {
-
-                population.DisplayPopulation();
             }
 
         }
