@@ -11,11 +11,6 @@ namespace WorldOfZuul
 
         public Dictionary<string, int> buildings { get; set; } = new();
 
-        static List<string> day1Buildings = new List<string> {"food supply", "hospital", "oil supply", "eco house"};
-        static List<string> day2Buildings = new List<string> {"wind energy", "solar energy", "community center", "shops"};
-        static List<string> day3Buildings = new List<string> {"luxury house", "public transport", "fission"};
-        static List<string> day5Buildings = new List<string> {"fusion"};
-
         public Room(string shortDesc, string longDesc)
         {
             ShortDescription = shortDesc;
@@ -73,14 +68,16 @@ namespace WorldOfZuul
         public void DisplayBuildingsInTheCurrentRoom()
         {
             Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
-            if (buildingsInRoom == null || buildingsInRoom.Count() < 1 || buildingsInRoom.Values.All(value => value == -1))
+            if (buildingsInRoom == null || buildingsInRoom.Count() < 1 || buildingsInRoom.Values.All(value => value == -1)) //goes through all values in the dictionary and checks if they're all -1
             {
                 Console.WriteLine("There are no buildings here.");
             }
             else
             {
                 foreach (KeyValuePair<string, int> building in buildingsInRoom)
-                {               
+                {
+                    //if the buildings.Value is -1, it means its not available during that day. 
+                    //Check DayProgress.BuildingsDailyUpdater() for clarification.               
                     if (building.Value != -1)
                     {
                         Console.WriteLine("{0}: {1}", building.Key, building.Value);
@@ -89,36 +86,6 @@ namespace WorldOfZuul
             }
         }
 
-        public void DisplaysBuildingsAvailable()
-        {
-            if (Game.currentRoom != null)
-            {
-                BuildingsAccordingToDay(1, day1Buildings);
-                BuildingsAccordingToDay(2, day2Buildings);
-                BuildingsAccordingToDay(3, day3Buildings);
-                BuildingsAccordingToDay(5, day5Buildings);
-            }
-            DisplayBuildingsInTheCurrentRoom();
-        }
-
-        private void BuildingsAccordingToDay(int day, List<string> newBuildings)
-        {
-            if (Game.dayCounter.currentDay == day)
-            {
-                UpdateBuildingAvailability(newBuildings);
-            }
-        }
-
-        private void UpdateBuildingAvailability(List<string> newAvailableBuildings) 
-        {
-            foreach (var newBuilding in newAvailableBuildings)
-            {
-                if (Game.currentRoom != null && Game.currentRoom.buildings.ContainsKey(newBuilding))
-                {
-                    buildings[newBuilding] = 0;
-                }
-            }
-        }
     }
 
     public class Residence : Room

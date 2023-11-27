@@ -4,11 +4,19 @@ using WorldOfZuul;
 
 public class DayProgress
 {
-    public int currentDay { get; private set; }
+    public int currentDay;
     private System.Timers.Timer timer = new System.Timers.Timer(300000);
 
-    List<string> day5Buildings = new List<string> {"fusion"};
-
+    private static List<List<string>> newBuildingsAccordingToDay = new List<List<string>>
+    {
+        new List<string>(),
+        new List<string> {"food supply", "hospital", "oil supply", "eco house"},
+        new List<string> {"wind energy", "solar energy", "community center", "shops"},
+        new List<string> {"luxury house", "public transport", "fission energy"},
+        new List<string>(),
+        new List<string> {"fusion energy"} 
+    };
+    
     public DayProgress(int day)
     {
         currentDay = day;
@@ -21,7 +29,21 @@ public class DayProgress
 
     private void TimerElapsedEventHandler(object? sender, ElapsedEventArgs e)
     {
-        UpdateDay();
+        UpdateDay(); //event that occurs when timer ends
+    }
+
+    void BuildingsDailyUpdater()
+    {
+        foreach (var room in Game.rooms) // makes sure to update buildings in every room
+        {
+            foreach (var newBuilding in newBuildingsAccordingToDay[currentDay])
+            {
+                if (room.buildings.ContainsKey(newBuilding)) 
+                {
+                    room.buildings[newBuilding] = 0; 
+                }
+            }
+        }
     }
 
     public void UpdateDay()
@@ -29,6 +51,7 @@ public class DayProgress
         if (currentDay <= 5)
         {
             currentDay++;
+            BuildingsDailyUpdater();
             Building.DailyMoneyManager();
             Console.WriteLine($"A day has passed. Current day: {currentDay}");
             Console.WriteLine($"You now have: {Game.currentMoney} euros.");

@@ -12,7 +12,7 @@ namespace WorldOfZuul
         public static Room? currentRoom;
         private Room? previousRoom;
         private Stack<Room?> roomHistory = new();
-        private Room[] rooms = new Room[9];
+        public static Room[] rooms = new Room[9];
 
         public static int currentMoney = new();
         public static int buildingProfit = new();
@@ -186,7 +186,7 @@ namespace WorldOfZuul
             if (selectedCustomizeOption == "infrastructure")
             {
                 Console.WriteLine("These are the current buildings you have in this room:");
-                currentRoom?.DisplaysBuildingsAvailable();
+                currentRoom?.DisplayBuildingsInTheCurrentRoom();
                 InfrastructureHandler();
             }
             if (selectedCustomizeOption == "energy")
