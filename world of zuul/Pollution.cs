@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 
 // POLLUTION CLASS
@@ -21,7 +23,7 @@ namespace world_of_zuul
     public static class Pollution
     {
 
-        private static int pollutionLevel = 0;
+        private static int pollutionLevel = 6070;
         private static int maxPollution = 6075;
         public static int PollutionLevel
         {
@@ -32,7 +34,10 @@ namespace world_of_zuul
                 if (value > maxPollution)
                 {
                     // Here put the code which you want to be executed when the Pollution level is exceeded
-                    Console.WriteLine("Pollution limit exceeded! You lost...");
+                    SetColor(Red);
+                    WriteLine("Pollution limit exceeded! You lost...");
+                    ColorReset();
+                    System.Environment.Exit(0);
                 }
 
                 pollutionLevel = value;
