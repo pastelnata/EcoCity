@@ -7,7 +7,7 @@ public class DayProgress
 {
     
     public int currentDay { get; private set; }
-    private System.Timers.Timer timer = new System.Timers.Timer(100);
+    private System.Timers.Timer timer = new System.Timers.Timer(300000);
 
     public DayProgress(int day)
     {
@@ -26,18 +26,14 @@ public class DayProgress
 
     public void UpdateDay()
     {
+ 
         if (currentDay < 5)
         {
-            Population population = new Population();
             DayProgress dayCounter = new DayProgress(0);
-            for (int i = 0; i < currentDay; i++)
-            {
-                population.startingPopulation += 50;
-            }
-     
             currentDay++;
             Console.WriteLine();
-            Console.WriteLine($"New day: | {currentDay}  | population: | {population.startingPopulation} |");
+            Console.Write($"New day: |  {currentDay}  |  ");
+            Population.increasePopulation();
         }
         timer.Stop();
         timer.Start();

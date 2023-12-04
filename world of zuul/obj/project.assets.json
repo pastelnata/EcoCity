@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Downloads\\UNI\\OOP\\EcoCity main code\\world of zuul\\world of zuul.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\UNI\\OOP\\EcoCity main code\\world of zuul\\world of zuul.csproj",
       "projectName": "world of zuul",
-      "projectPath": "C:\\Users\\User\\Downloads\\UNI\\OOP\\EcoCity main code\\world of zuul\\world of zuul.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\UNI\\OOP\\EcoCity main code\\world of zuul\\world of zuul.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Downloads\\UNI\\OOP\\EcoCity main code\\world of zuul\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\UNI\\OOP\\EcoCity main code\\world of zuul\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -3,16 +3,12 @@ using world_of_zuul;
 
 namespace WorldOfZuul
 {
-    public class Population
-    {
-        Pollution pollution = new Pollution();
-
-        public int populationGrow = 50;
-        public int startingPopulation = 500;
-        public int currentPopulation;
+    public static class Population
+    {     
+        public static int populationGrow = 50;
+        public static int startingPopulation = 500;
         
-       
-        public void DecreasePopulation(int amount = 200)
+       /* public void DecreasePopulation(int amount = 200)
         {
             Pollution pollution = new Pollution();
             startingPopulation -= amount;
@@ -21,13 +17,15 @@ namespace WorldOfZuul
             {
                 Console.WriteLine($"You have exceeded the limit and have lost {currentPopulation}");
             }
-        }
-        public void IncreasePopulation()
+        }*/
+        public static void increasePopulation()
         {
-                   
+            startingPopulation += 50;
+            Console.WriteLine($"There is {startingPopulation} people  |");
         }
-        public void DisplayPopulation()
-        {           
+
+        public static void displayPopulation()
+        {
             Console.WriteLine($"There is {startingPopulation} people");
         }
 
