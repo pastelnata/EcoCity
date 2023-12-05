@@ -56,6 +56,7 @@ public class DayProgress
             currentDay++;
             BuildingsDailyUpdater();
             Building.DailyMoneyManager();
+            ENERGY.EnergyIsEnough();
             Console.WriteLine($"A day has passed. Current day: {currentDay}");
             Console.WriteLine($"You now have: {Game.currentMoney} euros.");
             Console.WriteLine();
