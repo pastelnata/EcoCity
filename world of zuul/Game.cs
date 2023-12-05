@@ -20,8 +20,6 @@ namespace WorldOfZuul
 
         public static DayProgress dayCounter = new DayProgress(0);
 
-        public EnergyBuilding energy = new EnergyBuilding();
-
         public Game()
         {
             CreateRooms();
@@ -227,8 +225,7 @@ namespace WorldOfZuul
             if (selectedCustomizeOption == "2")
             {
                 Console.WriteLine("You currently have these buildings in this room:");
-                energy.DisplayEnergies();
-                energy.EnergyHandler();
+                ENERGY.DisplayEnergy();
             }
             if (selectedCustomizeOption.ToLower() == "3")
             {
@@ -306,6 +303,7 @@ namespace WorldOfZuul
                 {
                     Building.UpdateDailyProfit(buildingChoice);
                     Building.DeductPlayersMoney(buildingChoice);
+                    ENERGY.DetermineBuildingType(buildingChoice);
                     currentRoom?.AddBuildingToRoom(buildingChoice);
                     Console.WriteLine($"current money: {currentMoney}");
                 }

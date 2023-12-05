@@ -35,7 +35,7 @@ namespace WorldOfZuul
 
         public bool VerifyIfValidBuildingType(string buildingName)
         {
-            if (buildings.Contains(buildingName))
+            if (buildings.ContainsKey(buildingName))
             {
                 return true;
             }

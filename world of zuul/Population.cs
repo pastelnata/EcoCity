@@ -20,7 +20,10 @@ namespace WorldOfZuul
         }*/
         public static void increasePopulation()
         {
-            startingPopulation += 50;
+            if(Happyness.IsHappynessEnough())
+            {
+                startingPopulation += 50;
+            }
             Console.WriteLine($"There is {startingPopulation} people  |");
         }
 
