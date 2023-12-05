@@ -35,7 +35,7 @@ namespace WorldOfZuul
 
         public bool VerifyIfValidBuildingType(string buildingName)
         {
-            if (buildings.ContainsKey(buildingName))
+            if (buildings.Contains(buildingName))
             {
                 return true;
             }
@@ -47,7 +47,7 @@ namespace WorldOfZuul
 
         public void RemoveBuildingFromRoom(string building)
         {
-            if (VerifyIfValidBuildingType(building) & buildings[building] > 0)
+            if (VerifyIfValidBuildingType(building))
             {
                 buildings[building]--;
                 // Pollution decrease

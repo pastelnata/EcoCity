@@ -20,6 +20,8 @@ namespace WorldOfZuul
 
         public static DayProgress dayCounter = new DayProgress(0);
 
+        public EnergyBuilding energy = new EnergyBuilding();
+
         public Game()
         {
             CreateRooms();
@@ -224,7 +226,9 @@ namespace WorldOfZuul
             }
             if (selectedCustomizeOption == "2")
             {
-                EnergyHandler();
+                Console.WriteLine("You currently have these buildings in this room:");
+                energy.DisplayEnergies();
+                energy.EnergyHandler();
             }
             if (selectedCustomizeOption.ToLower() == "3")
             {
@@ -267,6 +271,7 @@ namespace WorldOfZuul
         /*-------------------------------------------------------------------------------------
             Executes commands like: move, customize, etc.
         ---------------------------------------------------------------------------------------*/
+
         private void Build()
         {
             Console.WriteLine("What building do you wish to build out of these options?");
@@ -307,6 +312,11 @@ namespace WorldOfZuul
             }
         }
 
+        public void AvailableBuldings()
+        {
+            Console.WriteLine();
+        }
+
         private void Demolish()
         {
             Console.WriteLine("What building do you wish to demolish out of these options?");
@@ -324,11 +334,6 @@ namespace WorldOfZuul
                 CustomizeHandler();
                 return;
             }
-        }
-
-        private void EnergyHandler()
-        {
-
         }
 
         private void Move(string direction)

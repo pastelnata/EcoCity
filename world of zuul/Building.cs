@@ -90,6 +90,12 @@ class Building
         }
     }
 }
+       /*
+       class CommercialBuilding : IBuilding
+       {
+
+       }
+       */
 
 
 
