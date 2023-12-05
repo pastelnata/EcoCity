@@ -5,32 +5,24 @@ namespace WorldOfZuul
 {
     public class Population
     {
-        Pollution pollution = new Pollution();
-        public static int currentPopulation { get; private set; }
-        public void IncreasePopulation(int amount)
+
+        public int populationGrow = 50;
+        public int startingPopulation = 500;
+        public int currentPopulation;
+        
+       
+        public void DecreasePopulation(int amount = 200)
         {
-            currentPopulation += amount;
-            //if (Day = Passed)
-            {
-                Console.WriteLine("The day passed and your town got 50 more people");
-            }
+           
+        }
+        public void IncreasePopulation()
+        {
+                   
+        }
+        public void DisplayPopulation()
+        {           
+            Console.WriteLine($"There is {startingPopulation} people");
         }
 
-        public void DecreasePopulation(int amount)
-        {
-            Pollution pollution = new Pollution();
-            amount = 200;
-            currentPopulation -= amount;
-
-            if (pollution.StartPollution > pollution.MaxPollution)
-            {
-                Console.WriteLine($"You have exceeded the limit and have lost {currentPopulation}");
-            }
-        }
-        public static void DisplayPopulation()
-        {
-            currentPopulation = 500;
-            Console.WriteLine($"There is {Population.currentPopulation} people");
-        }
     }
 }

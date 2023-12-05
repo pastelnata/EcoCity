@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using static world_of_zuul.Pollution;
 
 namespace WorldOfZuul
 {
@@ -153,29 +154,47 @@ namespace WorldOfZuul
             else if (selectedAction == "stats")
             {
                 Console.WriteLine($"current money: {currentMoney}");
+                Console.Write("Pollution: ");
+                DisplayPollution();
+                
             }
         }
 
         private void MoveHandler()
         {
+            bool move = true;
             List<string> validDirections = new List<string> { "north", "east", "south", "west", "back" };
-            PrintUserOptions(validDirections);
-
-            Console.Write("> ");
-            string? selectedDirection = Console.ReadLine();
-
-            selectedDirection = ValidateInput(validDirections, selectedDirection);
-
-            if (selectedDirection != "back")
+            while (move)
             {
-                Move(selectedDirection);
-                PrintMap(currentRoom, rooms);
+                Console.WriteLine("Move: ");
+
+                foreach (string word in validDirections)
+                {
+                    Console.Write(word + " ");          
+                }
+                Console.WriteLine();
+
+
+                string? selectedDirection = Console.ReadLine();
+
+                selectedDirection = ValidateInput(validDirections, selectedDirection);
+
+                if (selectedDirection != "back")
+                {
+                    Move(selectedDirection);
+                    PrintMap(currentRoom, rooms);
+                }
+                else 
+                {
+                    break;
+                }
             }
         }
 
         private void CustomizeHandler()
         {
             List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "population", "back" };
+            
             PrintUserOptions(validCustomizeOptions);
 
             Console.Write("> ");
@@ -195,7 +214,6 @@ namespace WorldOfZuul
             }
             if (selectedCustomizeOption == "population")
             {
-                Population.DisplayPopulation();
             }
 
         }
@@ -222,6 +240,7 @@ namespace WorldOfZuul
             {
                 Demolish();
             }
+            
         }
 
 
@@ -325,7 +344,7 @@ namespace WorldOfZuul
             Console.WriteLine("Type 'actions' to skip a day or check your progress");
             Console.WriteLine("Type 'describe' to see describtion of a place you are currently located in.");
             Console.WriteLine("Type 'return' to go to the previous room.");
-            Console.WriteLine("Type 'back' to go back.");
+            Console.WriteLine("Type 'back' to go return to options.");
             Console.WriteLine("Type 'help' to print this message again.");
             Console.WriteLine("Type 'quit' to exit the game.");
         }
@@ -345,18 +364,18 @@ namespace WorldOfZuul
 
         private static void PrintMap(Room? currentRoom, Room[] rooms)
         {
-            Console.WriteLine();
-            Console.WriteLine("Map:");
+            
+            
             for (int i = 0; i < rooms.Length; i++)
             {
 
                 if (rooms[i] == currentRoom)
                 {
-                    Console.Write("X ");
+                    Console.Write("o ");
                 }
                 else
                 {
-                    Console.Write(". ");
+                    Console.Write("- ");
                 }
                 if ((i + 1) % 3 == 0)
                 {

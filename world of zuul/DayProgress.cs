@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Timers;
 using WorldOfZuul;
 
@@ -48,8 +49,15 @@ public class DayProgress
 
     public void UpdateDay()
     {
-        if (currentDay <= 5)
+        if (currentDay < 5)
         {
+            Population population = new Population();
+            DayProgress dayCounter = new DayProgress(0);
+            for (int i = 0; i < currentDay; i++)
+            {
+                population.startingPopulation += 50;
+            }
+     
             currentDay++;
             BuildingsDailyUpdater();
             Building.DailyMoneyManager();

@@ -21,6 +21,25 @@ class Building
         {"fusion energy", 10000},
     };
 
+    // Dictionary with buildings and their corresponding amounts of increased pollution when built
+    public static Dictionary<string,int> buildingPollution { get; } = new Dictionary<string, int>()
+    {
+        {"basic house", 10},
+        {"eco house", 1},
+        {"luxury house", 50},
+        {"hospital", 30},
+        {"community center", 10},
+        {"public transport", -100},
+        {"food supply", 200},
+        {"shops", 300},
+        {"coal energy", 200},
+        {"oil supply", 400},
+        {"wind energy", 10},
+        {"solar energy", 20},
+        {"fission energy", 50},
+        {"fusion energy", 0},
+    };
+
     public static bool CanPlayerCanAffordBuilding(string buildingToBuy)
     {
         if (Game.currentMoney >= buildingCosts[buildingToBuy])
