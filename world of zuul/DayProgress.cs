@@ -49,20 +49,18 @@ public class DayProgress
 
     public void UpdateDay()
     {
+ 
         if (currentDay < 5)
         {
-            Population population = new Population();
             DayProgress dayCounter = new DayProgress(0);
-            for (int i = 0; i < currentDay; i++)
-            {
-                population.startingPopulation += 50;
-            }
-     
             currentDay++;
             BuildingsDailyUpdater();
             Building.DailyMoneyManager();
             Console.WriteLine($"A day has passed. Current day: {currentDay}");
             Console.WriteLine($"You now have: {Game.currentMoney} euros.");
+            Console.WriteLine();
+            Console.Write($"New day: |  {currentDay}  |  ");
+            Population.increasePopulation();
         }
         timer.Stop();
         timer.Start();
