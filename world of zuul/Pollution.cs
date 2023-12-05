@@ -23,7 +23,7 @@ namespace world_of_zuul
     public static class Pollution
     {
 
-        private static int pollutionLevel = 6070;
+        private static int pollutionLevel = 0;
         private static int maxPollution = 6075;
         public static int PollutionLevel
         {

@@ -171,9 +171,8 @@ namespace WorldOfZuul
 
         private void MoveHandler()
         {
-            bool move = true;
-            List<string> validDirections = new List<string> {"north","east","south","west","back","N","E","S","W","B"};
-            while (move = true)
+            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back", "N", "E", "S", "W", "B" };
+            while (true)
             {
                 Console.Write("Choose: ");
                 Console.Write(" < N >        < E >         < S >        < W >        < B >  ");
@@ -195,7 +194,7 @@ namespace WorldOfZuul
                     Move(selectedDirection);
                     PrintMap(currentRoom, rooms);
                 }
-                else 
+                else
                 {
                     break;
                 }
