@@ -1,5 +1,6 @@
 using System;
 using System.Timers;
+using WorldOfZuul;
 
 class DayProgress
 {
@@ -26,6 +27,7 @@ class DayProgress
         if (currentDay <= 5)
         {
             currentDay++;
+            ENERGY.EnergyIsEnough();
             Console.WriteLine($"A day has passed. Current day: {currentDay}");
         }
         timer.Stop();
