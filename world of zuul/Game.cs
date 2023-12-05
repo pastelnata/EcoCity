@@ -14,7 +14,7 @@ namespace WorldOfZuul
         private Stack<Room?> roomHistory = new();
         private Room[] rooms = new Room[9];
 
-        private DayProgress dayCounter = new DayProgress(0);
+        public static DayProgress dayCounter = new DayProgress(0);
 
         public EnergyBuilding energy = new EnergyBuilding();
 
