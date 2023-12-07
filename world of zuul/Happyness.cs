@@ -20,14 +20,5 @@ namespace WorldOfZuul
             }
             return -1;
         }
-        
-        public static bool IsHappynessEnough() 
-        {
-            if(happyness < happynessLimit) 
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }

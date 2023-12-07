@@ -5,6 +5,8 @@ using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using static world_of_zuul.Pollution;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 namespace WorldOfZuul
 {
@@ -127,8 +129,23 @@ namespace WorldOfZuul
                         break;
                 }
             }
-
+            Console.WriteLine();
+            EndGameSummary();
+            SetColor(Magenta);
+            Console.WriteLine("Your stats are: ");
+            SetColor(Gray);
+            Console.Write("Pollution: ");
+            DisplayPollution();
+            Console.WriteLine();
+            SetColor(Blue);
+            Console.WriteLine($"Happiness: {Happyness.happyness}");
+            SetColor(Yellow);
+            Console.WriteLine($"Money: {currentMoney}");
+            SetColor(Cyan);
+            Population.displayPopulation();
+            SetColor(Green);
             Console.WriteLine("Thank you for playing EcoCity!");
+            ColorReset();
         }
 
         /*-------------------------------------------------------------------------------------
@@ -137,18 +154,18 @@ namespace WorldOfZuul
 
         private void ActionHandler()
         {
-            List<string> validActions = new List<string> {"skip day","stats","back","1","2","B"};
+            List<string> validActions = new List<string> { "skip day", "stats", "back", "1", "2", "B" };
             Console.Write("Type: ");
             Console.Write("     < 1 >         < 2 >          < B >  ");
             Console.WriteLine();
-            for (int i = 0; i <=2; i++)
+            for (int i = 0; i <= 2; i++)
             {
                 Console.Write($"   |     {validActions[i]}");
-       
+
             }
 
             Console.Write("     |");
-            
+
             Console.WriteLine();
             Console.Write("> ");
             string? selectedAction = Console.ReadLine();
@@ -205,7 +222,7 @@ namespace WorldOfZuul
 
         private void CustomizeHandler()
         {
-            List<string> validCustomizeOptions = new List<string> {"infrastructure","energy","population","back","1","2","3","B"};
+            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "population", "back", "1", "2", "3", "B" };
             Console.WriteLine("Choose:   < 1 >       < 2 >      < 3 >     < B > ");
             Console.Write("> ");
             for (int i = 0; i < 4; i++)
@@ -238,7 +255,7 @@ namespace WorldOfZuul
         private void InfrastructureHandler()
         {
             Console.WriteLine("Here you can");
-            List<string> validInfrastructureOptions = new List<string> {"build", "demolish", "back", "1", "2", "B"};
+            List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back", "1", "2", "B" };
             Console.WriteLine("Choose:   < 1 >         < 2 >           < B >");
 
             for (int i = 0; i < 3; i++)
@@ -261,7 +278,7 @@ namespace WorldOfZuul
             {
                 Demolish();
             }
-            
+
         }
 
 
@@ -290,7 +307,7 @@ namespace WorldOfZuul
                 Console.Write("> ");
                 string? buildingChoice = Console.ReadLine();
 
-                if(buildingChoice == "back")
+                if (buildingChoice == "back")
                 {
                     InfrastructureHandler();
                     return;
@@ -329,7 +346,7 @@ namespace WorldOfZuul
             {
                 currentRoom?.RemoveBuildingFromRoom(buildingChoice);
             }
-            else if(buildingChoice == "back")
+            else if (buildingChoice == "back")
             {
                 CustomizeHandler();
                 return;
@@ -366,10 +383,74 @@ namespace WorldOfZuul
             Console.WriteLine("Type '1' to move around");
             Console.WriteLine("Type '2' to customize your city");
             Console.WriteLine("Type '3' to skip a day or check your progress");
-            Console.WriteLine("Type '4' to see describtion of a place you are currently located in.");
+            Console.WriteLine("Type '4' to see description of a place you are currently located in.");
             Console.WriteLine("Type '6' to print this message again.");
             Console.WriteLine("Type 'B' to go return to options.");
             Console.WriteLine("Type < Quit > to exit the game :'( .");
+        }
+
+        private static void EndGameSummary()
+        {
+            if (Happyness.happyness <= 1000)
+            {
+                SetColor(Red);
+                Console.WriteLine("Environmental Crisis");
+                Console.WriteLine();
+                Console.WriteLine("In this sad outcome, the city is in trouble because we didn't take care of the environment.");
+                Console.WriteLine("The air and water are dirty, and plants and animals are disappearing.");
+                Console.WriteLine("This hurts people's health and happiness.");
+                Console.WriteLine("This ending shows how important it is to think about the environment when building a city.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else if (Happyness.happyness <= 2000)
+            {
+                SetColor(DarkMagenta);
+                Console.WriteLine("Struggling to be Green");
+                Console.WriteLine();
+                Console.WriteLine("Even though we tried, the city is still having a hard time being good to the environment.");
+                Console.WriteLine("We don't have enough things to help us be green, like clean energy.");
+                Console.WriteLine("People in the city are dealing with problems like dirty air and water.");
+                Console.WriteLine("We learn that we need to do more to make the city better for the environment.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else if (Happyness.happyness <= 3000)
+            {
+                SetColor(Yellow);
+                Console.WriteLine("Finding the Middle");
+                Console.WriteLine();
+                Console.WriteLine("In this okay ending, the city is doing better at being green, but we still have some problems.");
+                Console.WriteLine("We are getting better at things like handling our trash and using clean energy. ");
+                Console.WriteLine("However, there are still issues like too much traffic.");
+                Console.WriteLine("This shows that we are learning and trying to make the city a good place for everyone.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else if (Happyness.happyness <= 4000)
+            {
+                SetColor(Blue);
+                Console.WriteLine("Happy and Green City");
+                Console.WriteLine();
+                Console.WriteLine("Because of good choices, the city is now a happy place with clean air and parks. ");
+                Console.WriteLine("We use things like wind and sun to make energy, and people have a good life.");
+                Console.WriteLine("The city becomes a role model for other places, showing that being good to the environment can make everyone's life better.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else
+            {
+                SetColor(Green);
+                Console.WriteLine("Super Eco-Friendly City");
+                Console.WriteLine();
+                Console.WriteLine("In this best ending, the city is amazing because we take care of the environment in every way.");
+                Console.WriteLine("We use clean energy, have lots of parks, and teach everyone how to be eco-friendly.");
+                Console.WriteLine("People are happy, and the city is a great example for others. ");
+                Console.WriteLine("This ending teaches us that learning about and caring for the environment makes the world a better place for everyone.");
+                Console.WriteLine();
+                ColorReset();
+            }
+
         }
 
         private void Return()
@@ -387,8 +468,8 @@ namespace WorldOfZuul
 
         private static void PrintMap(Room? currentRoom, Room[] rooms)
         {
-            
-            
+
+
             for (int i = 0; i < rooms.Length; i++)
             {
 

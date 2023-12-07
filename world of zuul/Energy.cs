@@ -1,4 +1,6 @@
 ﻿using world_of_zuul;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 namespace WorldOfZuul
 {
@@ -41,6 +43,9 @@ namespace WorldOfZuul
             if(energyIncome < limit)
             {
                 Game.currentMoney = Game.currentMoney / 2;
+                SetColor(Red);
+                Console.WriteLine("You didn't reach the energy limit so you lost half of your money.");
+                ColorReset();
             }
         }
 
@@ -52,10 +57,10 @@ namespace WorldOfZuul
                     Happyness.happyness += 50;
                     break;
                 case "eco house":
-                    Happyness.happyness += 500;
+                    Happyness.happyness += 250;
                     break;
                 case "luxury house":
-                    Happyness.happyness += 250;
+                    Happyness.happyness += 500;
                     break;
                 case "hospital":
                     Happyness.happyness += 250;
