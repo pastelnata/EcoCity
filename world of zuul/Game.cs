@@ -160,12 +160,14 @@ namespace WorldOfZuul
                 Console.WriteLine("you have skipped a day.");
                 dayCounter.UpdateDay();
             }
-            else if (selectedAction == "stats")
+            else if (selectedAction == "stats" || selectedAction == "2")
             {
                 Console.WriteLine($"current money: {currentMoney}");
                 Console.Write("Pollution: ");
                 DisplayPollution();
-                
+                Console.WriteLine();
+                Console.WriteLine($"Happiness: {Happyness.happyness}");
+                Population.displayPopulation();
             }
         }
 

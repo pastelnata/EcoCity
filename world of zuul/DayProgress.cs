@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Timers;
+using world_of_zuul;
 using WorldOfZuul;
 
 public class DayProgress
@@ -61,7 +62,10 @@ public class DayProgress
             Console.WriteLine($"You now have: {Game.currentMoney} euros.");
             Console.WriteLine();
             Console.Write($"New day: |  {currentDay}  |  ");
-            Population.increasePopulation();
+            Console.Write("Pollution:");
+            Pollution.DisplayPollution();
+            Console.Write(" | ");
+            Population.IncreasePopulation();
         }
         timer.Stop();
         timer.Start();

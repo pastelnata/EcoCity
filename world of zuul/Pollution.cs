@@ -52,7 +52,7 @@ namespace world_of_zuul
 
         public static void DisplayPollution()
         {
-            Console.WriteLine(pollutionLevel);
+            Console.Write(pollutionLevel);
         }
     }
 }

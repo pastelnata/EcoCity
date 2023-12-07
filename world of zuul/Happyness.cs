@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 
 namespace WorldOfZuul
@@ -7,26 +8,17 @@ namespace WorldOfZuul
         public static int happyness;
         public static int happynessLimit;
 
-        public static void HappynessLimit()
+        public static int HappynessLimit()
         {
-            switch (Game.dayCounter.currentDay) 
+            int[] happynessArray = {300, 600, 1200, 1800, 3600};
+            for(int i = Game.dayCounter.currentDay; i-1 >= 0 ; i--)
             {
-                case 1:
-                    happynessLimit = 300;
-                    break;
-                case 2:
-                    happynessLimit = 600;
-                    break;
-                case 3:
-                    happynessLimit = 1200;
-                    break;
-                case 4:
-                    happynessLimit = 1800;
-                    break;
-                case 5:
-                    happynessLimit = 3600;
-                    break;
+                if(happyness> happynessArray[i-1])
+                {
+                    return i-1;
+                }
             }
+            return -1;
         }
         
         public static bool IsHappynessEnough() 
