@@ -241,7 +241,7 @@ namespace WorldOfZuul
 
         private void CustomizeHandler()
         {
-            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "back", "1", "2", "3", "B" };
+            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "back", "1", "2", "3", "b" };
             SetColor(Blue);
             Console.WriteLine("Choose:   < 1 >       < 2 >     < B > ");
             ColorReset();
@@ -256,7 +256,7 @@ namespace WorldOfZuul
             Console.WriteLine();
             string? selectedCustomizeOption = Console.ReadLine();
 
-            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption);
+            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption.ToLower());
 
             if (selectedCustomizeOption == "1")
             {
