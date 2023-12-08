@@ -62,7 +62,7 @@ Available colors:
                     Red
                     Magenta
                     Yellow
-                    White
+                    White 
 */
         public static void SetColor(ConsoleColor color)
         {

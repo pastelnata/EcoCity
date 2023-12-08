@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "jXoMHzisSs6SQZwsEWIJ/QLi773V4SAXODIhDE72doPaYhbqxEpgwdNaF+cYbZmpL62hbyppqpkuPttyG9TZTg==",
+  "dgSpecHash": "wx/yIyDji0gULODHJi0/r0bx+bAm8s9yJM3Y2svWmcUCRupFKwQllN2LHHmkciF+IUYDFRpCTGOnhgDBvyjinw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lenovo\\Downloads\\EcoCity\\world of zuul\\world of zuul.csproj",
+  "projectFilePath": "C:\\Users\\ritab\\Downloads\\EcoCity\\world of zuul\\world of zuul.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\ritab\\Downloads\\EcoCity\\world of zuul\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

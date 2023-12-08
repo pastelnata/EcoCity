@@ -1,0 +1,12 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "coreclr",
+      "name": "Game.cs",
+      "project": "world of zuul\\Game.cs",
+      "projectTarget": ""
+    }
+  ]
+}

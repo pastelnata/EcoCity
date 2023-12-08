@@ -1,8 +1,11 @@
 using System;
+using System.Drawing;
 using System.Text;
 using System.Timers;
 using world_of_zuul;
 using WorldOfZuul;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 public class DayProgress
 {
@@ -53,19 +56,25 @@ public class DayProgress
  
         if (currentDay < 5)
         {
+            SetColor(Red);
             DayProgress dayCounter = new DayProgress(0);
             currentDay++;
             BuildingsDailyUpdater();
             Building.DailyMoneyManager();
             Console.WriteLine($"A day has passed. Current day: {currentDay}");
             ENERGY.EnergyIsEnough();
+            ColorReset();
+            SetColor(Blue);
             Console.WriteLine($"You now have: {Game.currentMoney} euros.");
             Console.WriteLine();
-            Console.Write($"New day: |  {currentDay}  |  ");
+            ColorReset();
+            SetColor(DarkGreen);
+            Console.Write($"New day: |  {currentDay}  |  ");  
             Console.Write("Pollution:");
             Pollution.DisplayPollution();
             Console.Write(" | ");
             Population.IncreasePopulation();
+            ColorReset();
         }
         timer.Stop();
         timer.Start();

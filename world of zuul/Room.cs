@@ -21,10 +21,10 @@ namespace WorldOfZuul
 
         public void SetExits(Room? north, Room? east, Room? south, Room? west)
         {
-            SetExit("N", north);
-            SetExit("E", east); // energy
-            SetExit("S", south); //commercial
-            SetExit("W", west); //residence
+            SetExit("n", north);
+            SetExit("e", east); // energy
+            SetExit("s", south); //commercial
+            SetExit("w", west); //residence
         }
 
         public void SetExit(string direction, Room? neighbor)

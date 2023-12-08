@@ -7,6 +7,9 @@ using System.Security.Cryptography.X509Certificates;
 using static world_of_zuul.Pollution;
 using static world_of_zuul.VisualTextWriter;
 using static System.ConsoleColor;
+using System.Numerics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
 
 namespace WorldOfZuul
 {
@@ -26,17 +29,18 @@ namespace WorldOfZuul
         {
             CreateRooms();
         }
-        private void CreateRooms()
-        {
-            Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
-            Room? northside = new("Northside", "You are standing in the Nothside of your city.");
-            Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
-            Residence? residence = new("Residence", "You are standing in the residencial area of your city");
-            Room? centre = new("Centre", "You are standing in the centre.");
-            Energy? energy = new("Energy", "You are now located in the energy area of your city.");
-            Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
-            Commercial? commercial = new("commercial", "You are now located in the commercial area of your city.");
-            Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
+        private void CreateRooms()  
+        { 
+            
+            Room? northwestside = new("Northwestside", "*  The NorthWestSide has been occupied with refugee shelters.");
+            Room? northside = new("Northside", "*  The Northside is curently an army facility and cannot be interacted with.");
+            Room? northeastside = new("Northeastside", "*  The NorthEastSide has been inhabited by wild life.");
+            Residence? residence = new("Residence", "*  In the residential area of your city you can build living homes."); 
+            Room? centre = new("Centre", "*  You are standing in the centre.");
+            Energy? energy = new("Energy", "*  In the energy area of your city you can build facilities to produce power.");
+            Room? southwestside = new("Southwestside", "*  The SouthWestSide was struck by an earthquake and therefore cant be renovated yet"); 
+            Commercial? commercial = new("commercial", "*  In the commercial area of your city you can build shops.");
+            Room? southeastside = new("Southeastside", "*  The SouthEastSide is currently flooded."); 
 
             rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, commercial, southeastside };
 
@@ -53,6 +57,7 @@ namespace WorldOfZuul
 
             currentRoom = centre;
             roomHistory.Push(currentRoom);
+            
         }
         public void Play()
         {
@@ -69,6 +74,7 @@ namespace WorldOfZuul
             bool continuePlaying = true;
             while (continuePlaying)
             {
+                
                 Console.WriteLine(currentRoom?.ShortDescription);
                 Console.Write("> ");
 
@@ -90,17 +96,19 @@ namespace WorldOfZuul
 
                 if (command == null)
                 {
-                    Console.WriteLine("I don't know that command.");
+                    Console.WriteLine("I don't know that command.");  
                     continue;
                 }
-
+                
                 switch (command.Name)
                 {
                     case "describe":
                     case "4":
+                        SetColor(Red);
                         Console.WriteLine(currentRoom?.LongDescription);
+                        ColorReset();
                         break;
-
+                        
                     case "actions":
                     case "3":
                         ActionHandler();
@@ -121,7 +129,7 @@ namespace WorldOfZuul
                         break;
 
                     case "help":
-                    case "6":
+                    case "5":
                         PrintHelp();
                         break;
 
@@ -157,16 +165,19 @@ namespace WorldOfZuul
         {
             List<string> validActions = new List<string> { "skip day", "stats", "back", "1", "2", "B" };
             Console.Write("Type: ");
+            SetColor(Blue);
             Console.Write("     < 1 >         < 2 >          < B >  ");
+            ColorReset();
             Console.WriteLine();
             for (int i = 0; i <= 2; i++)
             {
+                SetColor(Red);
                 Console.Write($"   |     {validActions[i]}");
 
             }
 
             Console.Write("     |");
-
+            ColorReset();
             Console.WriteLine();
             Console.Write("> ");
             string? selectedAction = Console.ReadLine();
@@ -175,7 +186,7 @@ namespace WorldOfZuul
 
             if (selectedAction == "skip day" || selectedAction == "1")
             {
-                Console.WriteLine("you have skipped a day.");
+                Console.WriteLine("You have skipped a day.");
                 dayCounter.UpdateDay();
             }
             else if (selectedAction == "stats" || selectedAction == "2")
@@ -191,25 +202,32 @@ namespace WorldOfZuul
 
         private void MoveHandler()
         {
-            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back", "N", "E", "S", "W", "B" };
+            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back", "n", "e", "s", "w", "b" };
             while (true)
             {
+                SetColor(White);
                 Console.Write("Choose: ");
+                ColorReset();
+                SetColor(Blue);
                 Console.Write(" < N >        < E >         < S >        < W >        < B >  ");
+                ColorReset();
                 Console.WriteLine();
                 for (int i = 0; i < 5; i++)
                 {
+                    SetColor(Red);
                     Console.Write($"   |     {validDirections[i]}");
+                    
                 }
 
                 Console.Write("   |");
+                ColorReset();
                 Console.WriteLine();
 
                 string? selectedDirection = Console.ReadLine();
 
-                selectedDirection = ValidateInput(validDirections, selectedDirection);
+                selectedDirection = ValidateInput(validDirections, selectedDirection.ToLower());
 
-                if (selectedDirection != "B")
+                if (selectedDirection != "b")
                 {
                     Move(selectedDirection);
                     PrintMap(currentRoom, rooms);
@@ -223,18 +241,22 @@ namespace WorldOfZuul
 
         private void CustomizeHandler()
         {
-            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "population", "back", "1", "2", "3", "B" };
-            Console.WriteLine("Choose:   < 1 >       < 2 >      < 3 >     < B > ");
+            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "back", "1", "2", "3", "b" };
+            SetColor(Blue);
+            Console.WriteLine("Choose:   < 1 >       < 2 >     < B > ");
+            ColorReset();
             Console.Write("> ");
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
+                SetColor(Red);
                 Console.Write($" | {validCustomizeOptions[i]}");
             }
             Console.Write(" |");
+            ColorReset();
             Console.WriteLine();
             string? selectedCustomizeOption = Console.ReadLine();
 
-            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption);
+            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption.ToLower());
 
             if (selectedCustomizeOption == "1")
             {
@@ -247,29 +269,28 @@ namespace WorldOfZuul
                 Console.WriteLine("You currently have these buildings in this room:");
                 ENERGY.DisplayEnergy();
             }
-            if (selectedCustomizeOption.ToLower() == "3")
-            {
-                Population.displayPopulation();
-            }
 
         }
         private void InfrastructureHandler()
         {
             Console.WriteLine("Here you can");
-            List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back", "1", "2", "B" };
+            List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back", "1", "2", "b" };
+            SetColor(Blue);
             Console.WriteLine("Choose:   < 1 >         < 2 >           < B >");
-
+            ColorReset();
             for (int i = 0; i < 3; i++)
             {
+                SetColor(Red);
                 Console.Write($"   |     {validInfrastructureOptions[i]}");
             }
             Console.Write("   |   ");
+            ColorReset();
             Console.WriteLine();
 
             Console.Write("> ");
             string? selectedInfrastructureOption = Console.ReadLine();
 
-            selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption);
+            selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption.ToLower());
 
             if (selectedInfrastructureOption == "1")
             {
@@ -376,7 +397,9 @@ namespace WorldOfZuul
             }
             else
             {
-                Console.WriteLine($"You can't go {direction}!");
+                SetColor(Red);
+                Console.WriteLine($"You're on the edge of the map!!");
+                ColorReset();
             }
         }
 
@@ -392,14 +415,57 @@ namespace WorldOfZuul
         {
             Console.WriteLine("Remember: the more sustainable your city is, the more expensive it becomes.");
             Console.WriteLine("However, it attracts more people, which also means more money.");
+            ColorReset();
             Console.WriteLine();
-            Console.WriteLine("Type '1' to move around");
-            Console.WriteLine("Type '2' to customize your city");
-            Console.WriteLine("Type '3' to skip a day or check your progress");
-            Console.WriteLine("Type '4' to see description of a place you are currently located in.");
-            Console.WriteLine("Type '6' to print this message again.");
-            Console.WriteLine("Type 'B' to go return to options.");
-            Console.WriteLine("Type < Quit > to exit the game :'( .");
+            SetColor(Red);
+            Console.WriteLine("Helpful tips to improve your game: ");
+            ColorReset();
+            SetColor(Blue);
+            Console.WriteLine("*   In each room you can build different buildings.");
+            Console.WriteLine("*   Go to a room by typing 1 and choosing a direction");
+            Console.WriteLine("*   If you have chosen a room now you can choose to customize by typing < B > and then < 2 > ");
+            ColorReset();
+            Console.WriteLine();
+            SetColor(Magenta);
+            Console.WriteLine("*   If you want to choose a different number from the options");
+            Console.WriteLine("    type < B > and then choose another number");
+            ColorReset();
+            Console.WriteLine();
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 1 > ");
+            ColorReset();
+            Console.WriteLine("to move around");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 2 > ");
+            ColorReset();
+            Console.WriteLine("to customize your city");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 3 > ");
+            ColorReset();
+            Console.WriteLine("to skip a day or check your progress");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 4 > ");
+            ColorReset();
+            Console.WriteLine("to see description of a place you are currently located in");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 5 > ");
+            ColorReset();
+            Console.WriteLine("to print this message again");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< B > ");
+            ColorReset();
+            Console.WriteLine("to return to options");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< Quit > ");
+            ColorReset();
+            Console.WriteLine("to exit the game");
         }
 
         private static void EndGameSummary()
@@ -466,19 +532,6 @@ namespace WorldOfZuul
 
         }
 
-        private void Return()
-        {
-            if (roomHistory.Count == 1)
-            {
-                Console.WriteLine("You can't return from here!");
-            }
-            else
-            {
-                roomHistory.Pop();
-                currentRoom = roomHistory.Peek();
-            }
-        }
-
         private static void PrintMap(Room? currentRoom, Room[] rooms)
         {
 
@@ -539,14 +592,6 @@ namespace WorldOfZuul
                 Convert.ToInt32(Console.ReadLine());
             }
             return string.Empty;
-        }
-
-        private void PrintUserOptions(List<string> Options)
-        {
-            for (int i = 0; i < Options.Count; i++)
-            {
-                Console.WriteLine(Options[i]);
-            }
         }
     }
 }
