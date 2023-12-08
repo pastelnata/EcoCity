@@ -76,7 +76,7 @@ namespace WorldOfZuul
         public void DisplayBuildingsInTheCurrentRoom()
         {
             Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
-            if (buildingsInRoom == null || buildingsInRoom.Count() < 1 || buildingsInRoom.Values.All(value => value == -1)) //goes through all values in the dictionary and checks if they're all -1
+            if (buildingsInRoom == null || buildingsInRoom.Count() < 1 || buildingsInRoom.Values.All(value => value == -1 || value == 0)) //goes through all values in the dictionary and checks if they're all -1
             {
                 Console.WriteLine("There are no buildings here.");
             }

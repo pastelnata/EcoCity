@@ -6,10 +6,10 @@ class Building
     public static Dictionary<string,int> buildingCosts { get; } = new Dictionary<string, int>()
     {
         {"basic house", 500},
-        {"eco house", 800},
-        {"luxury house", 1500},
         {"hospital", 2000},
+        {"eco house", 800},
         {"community center", 1000},
+        {"luxury house", 1500},
         {"public transport", 2500},
         {"food supply", 800},
         {"shops", 1200},
@@ -25,10 +25,10 @@ class Building
     public static Dictionary<string,int> buildingPollution { get; } = new Dictionary<string, int>()
     {
         {"basic house", 10},
-        {"eco house", 1},
-        {"luxury house", 50},
         {"hospital", 30},
+        {"eco house", 1},
         {"community center", 10},
+        {"luxury house", 50},
         {"public transport", -100},
         {"food supply", 200},
         {"shops", 300},
@@ -40,7 +40,25 @@ class Building
         {"fusion energy", 0},
     };
 
-    public static bool CanPlayerCanAffordBuilding(string buildingToBuy)
+    public static Dictionary<string,int> buildingValidInputs { get; } = new Dictionary<string, int>()
+    {
+        {"basic house", 1},
+        {"hospital", 2},
+        {"eco house", 3},
+        {"community center", 4},
+        {"luxury house", 5},
+        {"public transport", 6},
+        {"food supply", 1},
+        {"shops", 2},
+        {"coal energy", 1},
+        {"oil supply", 2},
+        {"wind energy", 3},
+        {"solar energy", 4},
+        {"fission energy", 5},
+        {"fusion energy", 6},
+    };
+
+        public static bool CanPlayerCanAffordBuilding(string buildingToBuy)
     {
         if (Game.currentMoney >= buildingCosts[buildingToBuy])
         {
@@ -80,7 +98,7 @@ class Building
             {
                 if (buildingsInRoom[building] != -1)
                 {
-                    Console.WriteLine("{0}: {1} euros", building, buildingCosts[building]);
+                    Console.WriteLine("{0}. {1}: {2} euros", buildingValidInputs[building], building, buildingCosts[building]);
                 }
             }
         }
@@ -90,12 +108,5 @@ class Building
         }
     }
 }
-       /*
-       class CommercialBuilding : IBuilding
-       {
-
-       }
-       */
-
 
 

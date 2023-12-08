@@ -116,6 +116,7 @@ namespace WorldOfZuul
                         break;
 
                     case "quit":
+                    case "Quit":
                         continuePlaying = false;
                         break;
 
@@ -302,51 +303,63 @@ namespace WorldOfZuul
             else
             {
                 Building.DisplayBuildingsCosts();
-                Console.WriteLine("back");
+                Console.WriteLine("B");
 
                 Console.Write("> ");
-                string? buildingChoice = Console.ReadLine();
+                string? userInput = Console.ReadLine();
 
-                if (buildingChoice == "back")
+                if (userInput == "B")
                 {
                     InfrastructureHandler();
                     return;
                 }
-                while (buildingChoice == null || currentRoom != null && !currentRoom.buildings.ContainsKey(buildingChoice))
+
+                int buildingChoice;
+                while (!int.TryParse(userInput, out buildingChoice) || userInput == null)
                 {
-                    Console.WriteLine("that is not a valid building.");
+                    Console.WriteLine("That is not a valid building.");
                     Console.Write("> ");
-                    buildingChoice = Console.ReadLine();
+                    userInput = Console.ReadLine();
                 }
-                if (Building.CanPlayerCanAffordBuilding(buildingChoice))
+
+                string validBuilding = ValidUserInputForBuildings(buildingChoice);
+
+                if (Building.CanPlayerCanAffordBuilding(validBuilding))
                 {
-                    Building.UpdateDailyProfit(buildingChoice);
-                    Building.DeductPlayersMoney(buildingChoice);
-                    ENERGY.DetermineBuildingType(buildingChoice);
-                    currentRoom?.AddBuildingToRoom(buildingChoice);
+                    Building.UpdateDailyProfit(validBuilding);
+                    Building.DeductPlayersMoney(validBuilding);
+                    ENERGY.DetermineBuildingType(validBuilding);
+                    currentRoom?.AddBuildingToRoom(validBuilding);
                     Console.WriteLine($"current money: {currentMoney}");
                 }
             }
-        }
-
-        public void AvailableBuldings()
-        {
-            Console.WriteLine();
         }
 
         private void Demolish()
         {
             Console.WriteLine("What building do you wish to demolish out of these options?");
             currentRoom?.DisplayBuildingsInTheCurrentRoom();
-            Console.WriteLine("back");
+            Console.WriteLine("B");
 
             Console.Write("> ");
-            string? buildingChoice = Console.ReadLine();
-            if (buildingChoice != null)
+            string? userInput = Console.ReadLine();
+
+            int buildingChoice;
+
+            //if input can't be converted to int or is null
+            while (!int.TryParse(userInput, out buildingChoice) || userInput == null)
             {
-                currentRoom?.RemoveBuildingFromRoom(buildingChoice);
+                Console.WriteLine("That is not a valid building.");
+                Console.Write("> ");
+                userInput = Console.ReadLine();
             }
-            else if (buildingChoice == "back")
+
+            if (userInput != null)
+            {
+                string buildingToDemolish = ValidUserInputForBuildings(buildingChoice);
+                currentRoom?.RemoveBuildingFromRoom(buildingToDemolish);
+            }
+            else if (userInput == "B")
             {
                 CustomizeHandler();
                 return;
@@ -503,6 +516,29 @@ namespace WorldOfZuul
             }
 
             return selectedInput;
+        }
+
+        private string ValidUserInputForBuildings(int userInput)
+        {
+            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
+            Dictionary<string, int>? buildingValidInputs = Building.buildingValidInputs;
+            
+            var commonBuildingNames = buildingsInRoom?.Keys.Intersect(buildingValidInputs.Keys);
+            if (commonBuildingNames != null)
+            {
+                foreach (var buildingName in commonBuildingNames)
+                {
+                    
+                    if (userInput == buildingValidInputs[buildingName])
+                    {
+                        return buildingName;
+                    }
+                }
+                Console.WriteLine("That is not a valid building.");
+                Console.Write("> ");
+                Convert.ToInt32(Console.ReadLine());
+            }
+            return string.Empty;
         }
 
         private void PrintUserOptions(List<string> Options)
