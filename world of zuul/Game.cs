@@ -75,20 +75,20 @@ namespace WorldOfZuul
             while (continuePlaying)
             {
                 
-                Console.WriteLine(currentRoom?.ShortDescription);
-                Console.Write("> ");
+                WriteLine(currentRoom?.ShortDescription);
+                Write("> ");
 
                 string? input = Console.ReadLine();
 
                 if (dayCounter.currentDay == 6)
                 {
-                    Console.WriteLine("Game over! You have reached the day limit.");
+                    WriteLine("Game over! You have reached the day limit.");
                     break;
                 }
 
                 if (string.IsNullOrEmpty(input))
                 {
-                    Console.WriteLine("Please enter a command.");
+                    WriteLine("Please enter a command.");
                     continue;
                 }
 
@@ -96,7 +96,7 @@ namespace WorldOfZuul
 
                 if (command == null)
                 {
-                    Console.WriteLine("I don't know that command.");  
+                    WriteLine("I don't know that command.");  
                     continue;
                 }
                 
@@ -105,7 +105,7 @@ namespace WorldOfZuul
                     case "describe":
                     case "4":
                         SetColor(Red);
-                        Console.WriteLine(currentRoom?.LongDescription);
+                        WriteLine(currentRoom?.LongDescription);
                         ColorReset();
                         break;
                         
@@ -134,26 +134,26 @@ namespace WorldOfZuul
                         break;
 
                     default:
-                        Console.WriteLine("I don't know that command.");
+                        WriteLine("I don't know that command.");
                         break;
                 }
             }
-            Console.WriteLine();
+            WriteLine();
             EndGameSummary();
             SetColor(Magenta);
-            Console.WriteLine("Your stats are: ");
+            WriteLine("Your stats are: ");
             SetColor(Gray);
-            Console.Write("Pollution: ");
+            Write("Pollution: ");
             DisplayPollution();
-            Console.WriteLine();
+            WriteLine();
             SetColor(Blue);
-            Console.WriteLine($"Happiness: {Happyness.happyness}");
+            WriteLine($"Happiness: {Happyness.happyness}");
             SetColor(Yellow);
-            Console.WriteLine($"Money: {currentMoney}");
+            WriteLine($"Money: {currentMoney}");
             SetColor(Cyan);
             Population.displayPopulation();
             SetColor(Green);
-            Console.WriteLine("Thank you for playing EcoCity!");
+            WriteLine("Thank you for playing EcoCity!");
             ColorReset();
         }
 
@@ -164,38 +164,38 @@ namespace WorldOfZuul
         private void ActionHandler()
         {
             List<string> validActions = new List<string> { "skip day", "stats", "back", "1", "2", "B" };
-            Console.Write("Type: ");
+            Write("Type: ");
             SetColor(Blue);
-            Console.Write("     < 1 >         < 2 >          < B >  ");
+            Write("     < 1 >         < 2 >          < B >  ");
             ColorReset();
-            Console.WriteLine();
+            WriteLine();
             for (int i = 0; i <= 2; i++)
             {
                 SetColor(Red);
-                Console.Write($"   |     {validActions[i]}");
+                Write($"   |     {validActions[i]}");
 
             }
 
-            Console.Write("     |");
+            Write("     |");
             ColorReset();
-            Console.WriteLine();
-            Console.Write("> ");
+            WriteLine();
+            Write("> ");
             string? selectedAction = Console.ReadLine();
 
             selectedAction = ValidateInput(validActions, selectedAction);
 
             if (selectedAction == "skip day" || selectedAction == "1")
             {
-                Console.WriteLine("You have skipped a day.");
+                WriteLine("You have skipped a day.");
                 dayCounter.UpdateDay();
             }
             else if (selectedAction == "stats" || selectedAction == "2")
             {
-                Console.WriteLine($"current money: {currentMoney}");
-                Console.Write("Pollution: ");
+                WriteLine($"current money: {currentMoney}");
+                Write("Pollution: ");
                 DisplayPollution();
-                Console.WriteLine();
-                Console.WriteLine($"Happiness: {Happyness.happyness}");
+                WriteLine();
+                WriteLine($"Happiness: {Happyness.happyness}");
                 Population.displayPopulation();
             }
         }
@@ -206,22 +206,22 @@ namespace WorldOfZuul
             while (true)
             {
                 SetColor(White);
-                Console.Write("Choose: ");
+                Write("Choose: ");
                 ColorReset();
                 SetColor(Blue);
-                Console.Write(" < N >        < E >         < S >        < W >        < B >  ");
+                Write(" < N >        < E >         < S >        < W >        < B >  ");
                 ColorReset();
-                Console.WriteLine();
+                WriteLine();
                 for (int i = 0; i < 5; i++)
                 {
                     SetColor(Red);
-                    Console.Write($"   |     {validDirections[i]}");
+                    Write($"   |     {validDirections[i]}");
                     
                 }
 
-                Console.Write("   |");
+                Write("   |");
                 ColorReset();
-                Console.WriteLine();
+                WriteLine();
 
                 string? selectedDirection = Console.ReadLine();
 
@@ -243,51 +243,51 @@ namespace WorldOfZuul
         {
             List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "back", "1", "2", "3", "b" };
             SetColor(Blue);
-            Console.WriteLine("Choose:   < 1 >       < 2 >     < B > ");
+            WriteLine("Choose:   < 1 >       < 2 >     < B > ");
             ColorReset();
-            Console.Write("> ");
+            Write("> ");
             for (int i = 0; i < 3; i++)
             {
                 SetColor(Red);
-                Console.Write($" | {validCustomizeOptions[i]}");
+                Write($" | {validCustomizeOptions[i]}");
             }
-            Console.Write(" |");
+            Write(" |");
             ColorReset();
-            Console.WriteLine();
+            WriteLine();
             string? selectedCustomizeOption = Console.ReadLine();
 
             selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption.ToLower());
 
             if (selectedCustomizeOption == "1")
             {
-                Console.WriteLine("These are the current buildings you have in this room:");
+                WriteLine("These are the current buildings you have in this room:");
                 currentRoom?.DisplayBuildingsInTheCurrentRoom();
                 InfrastructureHandler();
             }
             if (selectedCustomizeOption == "2")
             {
-                Console.WriteLine("You currently have these buildings in this room:");
+                WriteLine("You currently have these buildings in this room:");
                 ENERGY.DisplayEnergy();
             }
 
         }
         private void InfrastructureHandler()
         {
-            Console.WriteLine("Here you can");
+            WriteLine("Here you can");
             List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back", "1", "2", "b" };
             SetColor(Blue);
-            Console.WriteLine("Choose:   < 1 >         < 2 >           < B >");
+            WriteLine("Choose:   < 1 >         < 2 >           < B >");
             ColorReset();
             for (int i = 0; i < 3; i++)
             {
                 SetColor(Red);
-                Console.Write($"   |     {validInfrastructureOptions[i]}");
+                Write($"   |     {validInfrastructureOptions[i]}");
             }
-            Console.Write("   |   ");
+            Write("   |   ");
             ColorReset();
-            Console.WriteLine();
+            WriteLine();
 
-            Console.Write("> ");
+            Write("> ");
             string? selectedInfrastructureOption = Console.ReadLine();
 
             selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption.ToLower());
@@ -312,21 +312,21 @@ namespace WorldOfZuul
 
         private void Build()
         {
-            Console.WriteLine("What building do you wish to build out of these options?");
+            WriteLine("What building do you wish to build out of these options?");
 
             Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
 
             if (buildingsInRoom == null || buildingsInRoom.Values.All(value => value == -1))
             {
-                Console.WriteLine("you can't build here yet.");
+                WriteLine("you can't build here yet.");
                 return;
             }
             else
             {
                 Building.DisplayBuildingsCosts();
-                Console.WriteLine("B");
+                WriteLine("B");
 
-                Console.Write("> ");
+                Write("> ");
                 string? userInput = Console.ReadLine();
 
                 if (userInput == "B")
@@ -338,8 +338,8 @@ namespace WorldOfZuul
                 int buildingChoice;
                 while (!int.TryParse(userInput, out buildingChoice) || userInput == null)
                 {
-                    Console.WriteLine("That is not a valid building.");
-                    Console.Write("> ");
+                    WriteLine("That is not a valid building.");
+                    Write("> ");
                     userInput = Console.ReadLine();
                 }
 
@@ -351,18 +351,18 @@ namespace WorldOfZuul
                     Building.DeductPlayersMoney(validBuilding);
                     ENERGY.DetermineBuildingType(validBuilding);
                     currentRoom?.AddBuildingToRoom(validBuilding);
-                    Console.WriteLine($"current money: {currentMoney}");
+                    WriteLine($"current money: {currentMoney}");
                 }
             }
         }
 
         private void Demolish()
         {
-            Console.WriteLine("What building do you wish to demolish out of these options?");
+            WriteLine("What building do you wish to demolish out of these options?");
             currentRoom?.DisplayBuildingsInTheCurrentRoom();
-            Console.WriteLine("B");
+            WriteLine("B");
 
-            Console.Write("> ");
+            Write("> ");
             string? userInput = Console.ReadLine();
 
             int buildingChoice;
@@ -370,8 +370,8 @@ namespace WorldOfZuul
             //if input can't be converted to int or is null
             while (!int.TryParse(userInput, out buildingChoice) || userInput == null)
             {
-                Console.WriteLine("That is not a valid building.");
-                Console.Write("> ");
+                WriteLine("That is not a valid building.");
+                Write("> ");
                 userInput = Console.ReadLine();
             }
 
@@ -398,74 +398,74 @@ namespace WorldOfZuul
             else
             {
                 SetColor(Red);
-                Console.WriteLine($"You're on the edge of the map!!");
+                WriteLine($"You're on the edge of the map!!");
                 ColorReset();
             }
         }
 
         private static void PrintWelcome()
         {
-            Console.WriteLine("Welcome to EcoCity!");
-            Console.WriteLine("EcoCity is a game where you can build your own sustainable city!");
+            WriteLine("Welcome to EcoCity!");
+            WriteLine("EcoCity is a game where you can build your own sustainable city!");
             PrintHelp();
-            Console.WriteLine();
+            WriteLine();
         }
 
         private static void PrintHelp()
         {
-            Console.WriteLine("Remember: the more sustainable your city is, the more expensive it becomes.");
-            Console.WriteLine("However, it attracts more people, which also means more money.");
+            WriteLine("Remember: the more sustainable your city is, the more expensive it becomes.");
+            WriteLine("However, it attracts more people, which also means more money.");
             ColorReset();
-            Console.WriteLine();
+            WriteLine();
             SetColor(Red);
-            Console.WriteLine("Helpful tips to improve your game: ");
+            WriteLine("Helpful tips to improve your game: ");
             ColorReset();
             SetColor(Blue);
-            Console.WriteLine("*   In each room you can build different buildings.");
-            Console.WriteLine("*   Go to a room by typing 1 and choosing a direction");
-            Console.WriteLine("*   If you have chosen a room now you can choose to customize by typing < B > and then < 2 > ");
+            WriteLine("*   In each room you can build different buildings.");
+            WriteLine("*   Go to a room by typing 1 and choosing a direction");
+            WriteLine("*   If you have chosen a room now you can choose to customize by typing < B > and then < 2 > ");
             ColorReset();
-            Console.WriteLine();
+            WriteLine();
             SetColor(Magenta);
-            Console.WriteLine("*   If you want to choose a different number from the options");
-            Console.WriteLine("    type < B > and then choose another number");
+            WriteLine("*   If you want to choose a different number from the options");
+            WriteLine("    type < B > and then choose another number");
             ColorReset();
-            Console.WriteLine();
-            Console.Write("Type ");
+            WriteLine();
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< 1 > ");
+            Write("< 1 > ");
             ColorReset();
-            Console.WriteLine("to move around");
-            Console.Write("Type ");
+            WriteLine("to move around");
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< 2 > ");
+            Write("< 2 > ");
             ColorReset();
-            Console.WriteLine("to customize your city");
-            Console.Write("Type ");
+            WriteLine("to customize your city");
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< 3 > ");
+            Write("< 3 > ");
             ColorReset();
-            Console.WriteLine("to skip a day or check your progress");
-            Console.Write("Type ");
+            WriteLine("to skip a day or check your progress");
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< 4 > ");
+            Write("< 4 > ");
             ColorReset();
-            Console.WriteLine("to see description of a place you are currently located in");
-            Console.Write("Type ");
+            WriteLine("to see description of a place you are currently located in");
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< 5 > ");
+            Write("< 5 > ");
             ColorReset();
-            Console.WriteLine("to print this message again");
-            Console.Write("Type ");
+            WriteLine("to print this message again");
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< B > ");
+            Write("< B > ");
             ColorReset();
-            Console.WriteLine("to return to options");
-            Console.Write("Type ");
+            WriteLine("to return to options");
+            Write("Type ");
             SetColor(Red);
-            Console.Write("< Quit > ");
+            Write("< Quit > ");
             ColorReset();
-            Console.WriteLine("to exit the game");
+            WriteLine("to exit the game");
         }
 
         private static void EndGameSummary()
@@ -473,60 +473,60 @@ namespace WorldOfZuul
             if (Happyness.happyness <= 1000)
             {
                 SetColor(Red);
-                Console.WriteLine("Environmental Crisis");
-                Console.WriteLine();
-                Console.WriteLine("In this sad outcome, the city is in trouble because we didn't take care of the environment.");
-                Console.WriteLine("The air and water are dirty, and plants and animals are disappearing.");
-                Console.WriteLine("This hurts people's health and happiness.");
-                Console.WriteLine("This ending shows how important it is to think about the environment when building a city.");
-                Console.WriteLine();
+                WriteLine("Environmental Crisis");
+                WriteLine();
+                WriteLine("In this sad outcome, the city is in trouble because we didn't take care of the environment.");
+                WriteLine("The air and water are dirty, and plants and animals are disappearing.");
+                WriteLine("This hurts people's health and happiness.");
+                WriteLine("This ending shows how important it is to think about the environment when building a city.");
+                WriteLine();
                 ColorReset();
             }
             else if (Happyness.happyness <= 2000)
             {
                 SetColor(DarkMagenta);
-                Console.WriteLine("Struggling to be Green");
-                Console.WriteLine();
-                Console.WriteLine("Even though we tried, the city is still having a hard time being good to the environment.");
-                Console.WriteLine("We don't have enough things to help us be green, like clean energy.");
-                Console.WriteLine("People in the city are dealing with problems like dirty air and water.");
-                Console.WriteLine("We learn that we need to do more to make the city better for the environment.");
-                Console.WriteLine();
+                WriteLine("Struggling to be Green");
+                WriteLine();
+                WriteLine("Even though we tried, the city is still having a hard time being good to the environment.");
+                WriteLine("We don't have enough things to help us be green, like clean energy.");
+                WriteLine("People in the city are dealing with problems like dirty air and water.");
+                WriteLine("We learn that we need to do more to make the city better for the environment.");
+                WriteLine();
                 ColorReset();
             }
             else if (Happyness.happyness <= 3000)
             {
                 SetColor(Yellow);
-                Console.WriteLine("Finding the Middle");
-                Console.WriteLine();
-                Console.WriteLine("In this okay ending, the city is doing better at being green, but we still have some problems.");
-                Console.WriteLine("We are getting better at things like handling our trash and using clean energy. ");
-                Console.WriteLine("However, there are still issues like too much traffic.");
-                Console.WriteLine("This shows that we are learning and trying to make the city a good place for everyone.");
-                Console.WriteLine();
+                WriteLine("Finding the Middle");
+                WriteLine();
+                WriteLine("In this okay ending, the city is doing better at being green, but we still have some problems.");
+                WriteLine("We are getting better at things like handling our trash and using clean energy. ");
+                WriteLine("However, there are still issues like too much traffic.");
+                WriteLine("This shows that we are learning and trying to make the city a good place for everyone.");
+                WriteLine();
                 ColorReset();
             }
             else if (Happyness.happyness <= 4000)
             {
                 SetColor(Blue);
-                Console.WriteLine("Happy and Green City");
-                Console.WriteLine();
-                Console.WriteLine("Because of good choices, the city is now a happy place with clean air and parks. ");
-                Console.WriteLine("We use things like wind and sun to make energy, and people have a good life.");
-                Console.WriteLine("The city becomes a role model for other places, showing that being good to the environment can make everyone's life better.");
-                Console.WriteLine();
+                WriteLine("Happy and Green City");
+                WriteLine();
+                WriteLine("Because of good choices, the city is now a happy place with clean air and parks. ");
+                WriteLine("We use things like wind and sun to make energy, and people have a good life.");
+                WriteLine("The city becomes a role model for other places, showing that being good to the environment can make everyone's life better.");
+                WriteLine();
                 ColorReset();
             }
             else
             {
                 SetColor(Green);
-                Console.WriteLine("Super Eco-Friendly City");
-                Console.WriteLine();
-                Console.WriteLine("In this best ending, the city is amazing because we take care of the environment in every way.");
-                Console.WriteLine("We use clean energy, have lots of parks, and teach everyone how to be eco-friendly.");
-                Console.WriteLine("People are happy, and the city is a great example for others. ");
-                Console.WriteLine("This ending teaches us that learning about and caring for the environment makes the world a better place for everyone.");
-                Console.WriteLine();
+                WriteLine("Super Eco-Friendly City");
+                WriteLine();
+                WriteLine("In this best ending, the city is amazing because we take care of the environment in every way.");
+                WriteLine("We use clean energy, have lots of parks, and teach everyone how to be eco-friendly.");
+                WriteLine("People are happy, and the city is a great example for others. ");
+                WriteLine("This ending teaches us that learning about and caring for the environment makes the world a better place for everyone.");
+                WriteLine();
                 ColorReset();
             }
 
@@ -541,15 +541,15 @@ namespace WorldOfZuul
 
                 if (rooms[i] == currentRoom)
                 {
-                    Console.Write("o ");
+                    Write("o ");
                 }
                 else
                 {
-                    Console.Write("- ");
+                    Write("- ");
                 }
                 if ((i + 1) % 3 == 0)
                 {
-                    Console.WriteLine();
+                    WriteLine();
                 }
             }
         }
@@ -563,8 +563,8 @@ namespace WorldOfZuul
 
             while (selectedInput == null || !validInputs.Contains(selectedInput))
             {
-                Console.WriteLine("That is not valid option.");
-                Console.Write("> ");
+                WriteLine("That is not valid option.");
+                Write("> ");
                 selectedInput = Console.ReadLine();
             }
 
@@ -587,8 +587,8 @@ namespace WorldOfZuul
                         return buildingName;
                     }
                 }
-                Console.WriteLine("That is not a valid building.");
-                Console.Write("> ");
+                WriteLine("That is not a valid building.");
+                Write("> ");
                 Convert.ToInt32(Console.ReadLine());
             }
             return string.Empty;

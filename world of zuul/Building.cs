@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using WorldOfZuul;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 class Building
 {
@@ -66,7 +68,7 @@ class Building
         }
         else
         {
-            Console.WriteLine("you do not have enough money for this building.");
+            WriteLine("you do not have enough money for this building.");
             return false;
         }
     }
@@ -104,7 +106,7 @@ class Building
         }
         else
         {
-            Console.WriteLine("you can't build here yet.");
+            WriteLine("you can't build here yet.");
         }
     }
 }

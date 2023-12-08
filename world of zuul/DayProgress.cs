@@ -61,18 +61,18 @@ public class DayProgress
             currentDay++;
             BuildingsDailyUpdater();
             Building.DailyMoneyManager();
-            Console.WriteLine($"A day has passed. Current day: {currentDay}");
+            WriteLine($"A day has passed. Current day: {currentDay}");
             ENERGY.EnergyIsEnough();
             ColorReset();
             SetColor(Blue);
-            Console.WriteLine($"You now have: {Game.currentMoney} euros.");
-            Console.WriteLine();
+            WriteLine($"You now have: {Game.currentMoney} euros.");
+            WriteLine();
             ColorReset();
             SetColor(DarkGreen);
-            Console.Write($"New day: |  {currentDay}  |  ");  
-            Console.Write("Pollution:");
+            Write($"New day: |  {currentDay}  |  ");  
+            Write("Pollution:");
             Pollution.DisplayPollution();
-            Console.Write(" | ");
+            Write(" | ");
             Population.IncreasePopulation();
             ColorReset();
         }

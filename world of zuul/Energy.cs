@@ -12,8 +12,8 @@ namespace WorldOfZuul
         public static void DisplayEnergy()
         {
             EnergyLimit();
-            Console.WriteLine($"You have {energyIncome} kWh of energy.");
-            Console.WriteLine($"You have to achieve {limit} kWh of energy today, otherwise you lose half of your money.");
+            WriteLine($"You have {energyIncome} kWh of energy.");
+            WriteLine($"You have to achieve {limit} kWh of energy today, otherwise you lose half of your money.");
         }
 
         public static void EnergyLimit()
@@ -44,7 +44,7 @@ namespace WorldOfZuul
             {
                 Game.currentMoney = Game.currentMoney / 2;
                 SetColor(Red);
-                Console.WriteLine("You didn't reach the energy limit so you lost half of your money.");
+                WriteLine("You didn't reach the energy limit so you lost half of your money.");
                 ColorReset();
             }
         }

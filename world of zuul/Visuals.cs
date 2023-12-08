@@ -32,7 +32,7 @@ namespace world_of_zuul
                 }
                 
             }
-            Thread.Sleep(85*sleep);
+            Thread.Sleep(20*sleep);
             Console.WriteLine();
         }
 

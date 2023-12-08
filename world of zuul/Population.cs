@@ -1,6 +1,8 @@
 using System;
 using world_of_zuul;
 using static WorldOfZuul.Happyness;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 namespace WorldOfZuul
 {
@@ -17,12 +19,12 @@ namespace WorldOfZuul
             {
                 PopulationLevel += PopulationGrow[index];
             }
-            Console.WriteLine($"There is {PopulationLevel} people  |");
+            WriteLine($"There is {PopulationLevel} people  |");
         }
 
         public static void displayPopulation()
         {
-            Console.WriteLine($"There is {PopulationLevel} people");
+            WriteLine($"There is {PopulationLevel} people");
         }
 
     }

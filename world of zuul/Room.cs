@@ -2,6 +2,8 @@ using System.Security.Cryptography.X509Certificates;
 using System;
 using static world_of_zuul.Pollution;
 using static Building;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
 
 namespace WorldOfZuul
 {
@@ -53,10 +55,10 @@ namespace WorldOfZuul
                 // Pollution decrease
                 ChangePollution(-buildingPollution[building]);
 
-                Console.WriteLine($"you have successfully demolished the building {building}!");
+                WriteLine($"you have successfully demolished the building {building}!");
                 return;
             }
-            Console.WriteLine($"{building} is not a valid building to demolish.");
+            WriteLine($"{building} is not a valid building to demolish.");
         }
 
         public void AddBuildingToRoom(string building)
@@ -67,10 +69,10 @@ namespace WorldOfZuul
                 // Pollution increase
                 ChangePollution(buildingPollution[building]);
                 
-                Console.WriteLine($"you have successfully added the building {building}!");
+                WriteLine($"you have successfully added the building {building}!");
                 return;
             }
-            Console.WriteLine($"{building} is not a valid building for this room.");
+            WriteLine($"{building} is not a valid building for this room.");
         }
 
         public void DisplayBuildingsInTheCurrentRoom()
@@ -78,7 +80,7 @@ namespace WorldOfZuul
             Dictionary<string, int>? buildingsInRoom = Game.currentRoom?.buildings;
             if (buildingsInRoom == null || buildingsInRoom.Count() < 1 || buildingsInRoom.Values.All(value => value == -1 || value == 0)) //goes through all values in the dictionary and checks if they're all -1
             {
-                Console.WriteLine("There are no buildings here.");
+                WriteLine("There are no buildings here.");
             }
             else
             {
