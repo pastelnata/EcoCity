@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static world_of_zuul.VisualTextWriter;
 using static System.ConsoleColor;
+using WorldOfZuul;
 
 
 // POLLUTION CLASS
@@ -37,6 +38,24 @@ namespace world_of_zuul
                     SetColor(Red);
                     WriteLine("Pollution limit exceeded! You lost...");
                     ColorReset();
+                    WriteLine();
+                    Game.EndGameSummary();
+                    SetColor(Magenta);
+                    WriteLine("Your stats are: ");
+                    SetColor(Gray);
+                    Write("Pollution: ");
+                    Pollution.DisplayPollution();
+                    WriteLine();
+                    SetColor(Blue);
+                    WriteLine($"Happiness: {Happyness.happyness}");
+                    SetColor(Yellow);
+                    WriteLine($"Money: {Game.currentMoney}");
+                    SetColor(Cyan);
+                    Population.displayPopulation();
+                    SetColor(Green);
+                    WriteLine("Thank you for playing EcoCity!");
+                    ColorReset();
+                    System.Environment.Exit(0);
                     System.Environment.Exit(0);
                 }
 

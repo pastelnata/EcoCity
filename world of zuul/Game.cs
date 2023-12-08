@@ -29,18 +29,18 @@ namespace WorldOfZuul
         {
             CreateRooms();
         }
-        private void CreateRooms()  
-        { 
-            
+        private void CreateRooms()
+        {
+
             Room? northwestside = new("Northwestside", "*  The NorthWestSide has been occupied with refugee shelters.");
             Room? northside = new("Northside", "*  The Northside is curently an army facility and cannot be interacted with.");
             Room? northeastside = new("Northeastside", "*  The NorthEastSide has been inhabited by wild life.");
-            Residence? residence = new("Residence", "*  In the residential area of your city you can build living homes."); 
+            Residence? residence = new("Residence", "*  In the residential area of your city you can build living homes.");
             Room? centre = new("Centre", "*  You are standing in the centre.");
             Energy? energy = new("Energy", "*  In the energy area of your city you can build facilities to produce power.");
-            Room? southwestside = new("Southwestside", "*  The SouthWestSide was struck by an earthquake and therefore cant be renovated yet"); 
+            Room? southwestside = new("Southwestside", "*  The SouthWestSide was struck by an earthquake and therefore cant be renovated yet");
             Commercial? commercial = new("commercial", "*  In the commercial area of your city you can build shops.");
-            Room? southeastside = new("Southeastside", "*  The SouthEastSide is currently flooded."); 
+            Room? southeastside = new("Southeastside", "*  The SouthEastSide is currently flooded.");
 
             rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, commercial, southeastside };
 
@@ -57,7 +57,7 @@ namespace WorldOfZuul
 
             currentRoom = centre;
             roomHistory.Push(currentRoom);
-            
+
         }
         public void Play()
         {
@@ -74,7 +74,7 @@ namespace WorldOfZuul
             bool continuePlaying = true;
             while (continuePlaying)
             {
-                
+
                 WriteLine(currentRoom?.ShortDescription);
                 Write("> ");
 
@@ -96,10 +96,10 @@ namespace WorldOfZuul
 
                 if (command == null)
                 {
-                    WriteLine("I don't know that command.");  
+                    WriteLine("I don't know that command.");
                     continue;
                 }
-                
+
                 switch (command.Name)
                 {
                     case "describe":
@@ -108,7 +108,7 @@ namespace WorldOfZuul
                         WriteLine(currentRoom?.LongDescription);
                         ColorReset();
                         break;
-                        
+
                     case "actions":
                     case "3":
                         ActionHandler();
@@ -216,7 +216,7 @@ namespace WorldOfZuul
                 {
                     SetColor(Red);
                     Write($"   |     {validDirections[i]}");
-                    
+
                 }
 
                 Write("   |");
@@ -224,17 +224,20 @@ namespace WorldOfZuul
                 WriteLine();
 
                 string? selectedDirection = Console.ReadLine();
-
-                selectedDirection = ValidateInput(validDirections, selectedDirection.ToLower());
-
-                if (selectedDirection != "b")
+                if (selectedDirection != null)
                 {
-                    Move(selectedDirection);
-                    PrintMap(currentRoom, rooms);
-                }
-                else
-                {
-                    break;
+                    selectedDirection = ValidateInput(validDirections, selectedDirection.ToLower());
+
+
+                    if (selectedDirection != "b")
+                    {
+                        Move(selectedDirection);
+                        PrintMap(currentRoom, rooms);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -255,8 +258,10 @@ namespace WorldOfZuul
             ColorReset();
             WriteLine();
             string? selectedCustomizeOption = Console.ReadLine();
-
-            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption.ToLower());
+            if (selectedCustomizeOption != null)
+            {
+                selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption.ToLower());
+            }
 
             if (selectedCustomizeOption == "1")
             {
@@ -289,9 +294,10 @@ namespace WorldOfZuul
 
             Write("> ");
             string? selectedInfrastructureOption = Console.ReadLine();
-
-            selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption.ToLower());
-
+            if (selectedInfrastructureOption != null)
+            {
+                selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption.ToLower());
+            }
             if (selectedInfrastructureOption == "1")
             {
                 Build();
@@ -468,7 +474,7 @@ namespace WorldOfZuul
             WriteLine("to exit the game");
         }
 
-        private static void EndGameSummary()
+        public static void EndGameSummary()
         {
             if (Happyness.happyness <= 1000)
             {
@@ -575,13 +581,13 @@ namespace WorldOfZuul
         {
             Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
             Dictionary<string, int>? buildingValidInputs = Building.buildingValidInputs;
-            
+
             var commonBuildingNames = buildingsInRoom?.Keys.Intersect(buildingValidInputs.Keys);
             if (commonBuildingNames != null)
             {
                 foreach (var buildingName in commonBuildingNames)
                 {
-                    
+
                     if (userInput == buildingValidInputs[buildingName])
                     {
                         return buildingName;

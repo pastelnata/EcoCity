@@ -76,6 +76,27 @@ public class DayProgress
             Population.IncreasePopulation();
             ColorReset();
         }
+        else if(currentDay>= 5)
+        {
+            WriteLine();
+            Game.EndGameSummary();
+            SetColor(Magenta);
+            WriteLine("Your stats are: ");
+            SetColor(Gray);
+            Write("Pollution: ");
+            Pollution.DisplayPollution();
+            WriteLine();
+            SetColor(Blue);
+            WriteLine($"Happiness: {Happyness.happyness}");
+            SetColor(Yellow);
+            WriteLine($"Money: {Game.currentMoney}");
+            SetColor(Cyan);
+            Population.displayPopulation();
+            SetColor(Green);
+            WriteLine("Thank you for playing EcoCity!");
+            ColorReset();
+            System.Environment.Exit(0);
+        }
         timer.Stop();
         timer.Start();
     }
