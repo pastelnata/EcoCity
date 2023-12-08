@@ -1,36 +1,29 @@
-﻿using System;
+using System;
 using world_of_zuul;
+using static WorldOfZuul.Happyness;
 
 namespace WorldOfZuul
 {
-    public class Population
+    public static class Population
     {
-       Pollution pollution = new Pollution();
-       public static int currentPopulation { get; private set; }
-       public void IncreasePopulation(int amount)
+        private static int[] PopulationGrow = { 100, 300, 700, 1500, 2400};
+        private static int PopulationLevel = 350;
+
+
+        public static void IncreasePopulation()
         {
-            currentPopulation += amount;
-            //if (Day = Passed)
+            int index = HappynessLimit();
+            if(index != -1 )
             {
-                Console.WriteLine("The day passed and your town got 50 more people");
+                PopulationLevel += PopulationGrow[index];
             }
+            Console.WriteLine($"There is {PopulationLevel} people  |");
         }
 
-        public void DecreasePopulation(int amount)
+        public static void displayPopulation()
         {
-            Pollution pollution = new Pollution();
-            amount = 200;
-            currentPopulation -= amount;
+            Console.WriteLine($"There is {PopulationLevel} people");
+        }
 
-            if(pollution.StartPollution > pollution.MaxPollution)
-            {               
-                Console.WriteLine($"You have exceeded the limit and have lost {currentPopulation}");               
-            }
-        }
-        public static void DisplayPopulation()
-        {
-            currentPopulation = 500;
-            Console.WriteLine($"There is {Population.currentPopulation} people");
-        }
     }
 }

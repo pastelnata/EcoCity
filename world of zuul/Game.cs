@@ -1,85 +1,90 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using static world_of_zuul.Pollution;
+using static world_of_zuul.VisualTextWriter;
+using static System.ConsoleColor;
+using System.Numerics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
 
 namespace WorldOfZuul
 {
     public class Game
     {
-        private Room? currentRoom;
+        public static Room? currentRoom;
         private Room? previousRoom;
         private Stack<Room?> roomHistory = new();
-        private Room[] rooms = new Room[9];
+        public static Room[] rooms = new Room[9];
+
+        public static int currentMoney = new();
+        public static int buildingProfit = new();
+
+        public static DayProgress dayCounter = new DayProgress(0);
 
         public Game()
         {
             CreateRooms();
         }
-        private void CreateRooms()
-        {
-            Room? northwestside = new("Northwestside", "You are standing in the Northwestside of your city.");
-            Room? residence = new("residence", "You are standing in the residence area of your city.");
-            Room? northeastside = new("Northeastside", "You are standing in the Northeastside of your city.");
-            Room? westside = new("Westside", "You are now located in the Westside of your city.");
-            Room? centre = new("Centre", "You are standing in the centre.");
-            Room? energy = new("Eastside", "You are now located in the energy area of your city.");
-            Room? southwestside = new("Southwestside", "You are standing in the Southwestside of your city.");
-            Room? moneymaker = new("moneymaker", "You are now located in the moneymaker area of your city.");
-            Room? southeastside = new("Southeastside", "You are now located in the Southeastside of your city.");
+        private void CreateRooms()  
+        { 
+            
+            Room? northwestside = new("Northwestside", "*  The NorthWestSide has been occupied with refugee shelters.");
+            Room? northside = new("Northside", "*  The Northside is curently an army facility and cannot be interacted with.");
+            Room? northeastside = new("Northeastside", "*  The NorthEastSide has been inhabited by wild life.");
+            Residence? residence = new("Residence", "*  In the residential area of your city you can build living homes."); 
+            Room? centre = new("Centre", "*  You are standing in the centre.");
+            Energy? energy = new("Energy", "*  In the energy area of your city you can build facilities to produce power.");
+            Room? southwestside = new("Southwestside", "*  The SouthWestSide was struck by an earthquake and therefore cant be renovated yet"); 
+            Commercial? commercial = new("commercial", "*  In the commercial area of your city you can build shops.");
+            Room? southeastside = new("Southeastside", "*  The SouthEastSide is currently flooded."); 
 
-            rooms = new Room[] {northwestside, residence, northeastside, westside, centre, energy, southwestside, moneymaker, southeastside};
+            rooms = new Room[] { northwestside, northside, northeastside, residence, centre, energy, southwestside, commercial, southeastside };
 
             // room.SetExits(North, East, South, West)
-            northwestside.SetExits(null, residence, westside, null);
-            residence.SetExits(null, northeastside, centre, northwestside);
-            northeastside.SetExits(null, null, energy, residence);
-            westside.SetExits(northwestside, centre, southwestside, null);
-            centre.SetExits(residence, energy, moneymaker, westside); 
+            northwestside.SetExits(null, northside, residence, null);
+            northside.SetExits(null, northeastside, centre, northwestside);
+            northeastside.SetExits(null, null, energy, northside);
+            residence.SetExits(northwestside, centre, southwestside, null);
+            centre.SetExits(northside, energy, commercial, residence);
             energy.SetExits(northeastside, null, southeastside, centre);
-            southwestside.SetExits(westside, moneymaker, null, null);
-            moneymaker.SetExits(centre, southeastside, null, southwestside);
-            southeastside.SetExits(energy,null , null, moneymaker);
+            southwestside.SetExits(residence, commercial, null, null);
+            commercial.SetExits(centre, southeastside, null, southwestside);
+            southeastside.SetExits(energy, null, null, commercial);
 
             currentRoom = centre;
             roomHistory.Push(currentRoom);
+            
         }
-
         public void Play()
         {
             Parser parser = new();
 
-            int day = 0;
-
-            Dictionary<string, int> buildingCounters = new Dictionary<string, int>
-            {
-                { "basic house", 0 },
-                { "coal energy", 0 },
-                { "food supply", 0 },
-                { "hospital", 0 },
-                { "oil supply", 0 },
-                { "eco house", 0 },
-                { "wind energy", 0 },
-                { "solar energy", 0 },
-                { "community center", 0 },
-                { "shops", 0 },
-                { "luxury house", 0 },
-                { "public transport", 0 },
-                { "fission energy", 0 },
-                { "fussion energy", 0 }
-            };
-
             PrintWelcome();
+
+            dayCounter.InitializeTimer();
+
+            currentMoney = 10000;
+
+            buildingProfit = 0;
 
             bool continuePlaying = true;
             while (continuePlaying)
             {
+                
                 Console.WriteLine(currentRoom?.ShortDescription);
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
+
+                if (dayCounter.currentDay == 6)
+                {
+                    Console.WriteLine("Game over! You have reached the day limit.");
+                    break;
+                }
 
                 if (string.IsNullOrEmpty(input))
                 {
@@ -91,267 +96,32 @@ namespace WorldOfZuul
 
                 if (command == null)
                 {
-                    Console.WriteLine("I don't know that command.");
+                    Console.WriteLine("I don't know that command.");  
                     continue;
                 }
-
-                switch(command.Name)
+                
+                switch (command.Name)
                 {
-                    case "look":
+                    case "describe":
+                    case "4":
+                        SetColor(Red);
                         Console.WriteLine(currentRoom?.LongDescription);
+                        ColorReset();
                         break;
+                        
 
                     case "actions":
-                        Console.WriteLine($"current day: {day}");
-                        Console.WriteLine("skip day");
-                        Console.WriteLine("stats");
-
-                        string? actionOptions = Console.ReadLine();
-                        List<string?> actionsOptions = new List<string?> {"skip day", "stats"};
-                        while (!actionsOptions.Contains(actionOptions))
-                        {
-                            Console.WriteLine("That is not a valid option.");
-                            Console.Write("> ");
-                            actionOptions = Console.ReadLine();
-                        }
-
-                        if (actionOptions == "skip day")
-                        {
-                            day++;
-                            Console.WriteLine("you have skipped a day.");
-                            Console.WriteLine($"current day: {day}");
-                        }
+                    case "3":
+                        ActionHandler();
                         break;
 
                     case "customize":
-                        Console.WriteLine("energy");
-                        Console.WriteLine("infrastructure");
-                        Console.WriteLine("population");
-                        Console.WriteLine("back");
-                        Console.Write("> ");
-                        
-                        string? userInput = Console.ReadLine();
-                        List<string?> customizeOptions = new List<string?> {"energy", "infrastructure", "population", "Return"};
-
-                        while (!customizeOptions.Contains(userInput))
-                        {
-                            Console.WriteLine("That is not a valid option.");
-                            Console.Write("> ");
-                            userInput = Console.ReadLine();
-                        }
-
-                        if (userInput == "infrastructure")
-                        {
-                            Console.WriteLine("build");
-                            Console.WriteLine("demolish");
-                            Console.Write("> ");
-                            List<string?> infrastructureOptions = new List<string?> {"build", "demolish"};
-
-                            string? userInput1 = Console.ReadLine();
-
-                            while (!infrastructureOptions.Contains(userInput1))
-                            {
-                                Console.WriteLine("That is not a valid option.");
-                                Console.Write("> ");
-                                userInput1 = Console.ReadLine();  
-                            }
-
-                            if (userInput1 == "build")
-                            {
-                                List<string> buildings = new List<string> {"basic house", "coal energy", "food supply", "hospital", "oil supply", "eco house", "wind energy", "solar energy", "community center", "shops", "luxury house", "public transport", "fission energy", "fusion energy"};
-                                Console.WriteLine("What do you wish to build?");
-
-                                switch (day)
-                                {
-                                    case 0:
-                                        if (currentRoom == rooms[0])
-                                        {
-                                            Build("basic house", 0, 0, 0);
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("You cannot build here yet. Try going into another room.");
-                                            Console.WriteLine("Return");
-                                            
-                                            Return();
-                                        }
-                                        break;
-                                    case 1:
-                                        if (currentRoom == rooms[1])
-                                        {
-                                            Build("basic house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("eco house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("hospital", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[7])
-                                        {
-                                            Build("food supply", 0, 0, 0);
-                                        }
-                                        break;
-                                    case 2:
-                                        if (currentRoom == rooms[1])
-                                        {
-                                            Build("basic house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("eco house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("hospital", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("community center", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[7])
-                                        {
-                                            Build("food supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("shops", 0, 0, 0);
-                                        }                                    
-                                        break;
-                                    case 3:
-                                        if (currentRoom == rooms[1])
-                                        {
-                                            Build("basic house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("eco house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("hospital", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("community center", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("luxury house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("public transport", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[7])
-                                        {
-                                            Build("food supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("shops", 0, 0, 0);
-                                        }
-                                        break;
-                                    case 4:
-                                        if (currentRoom == rooms[1])
-                                        {
-                                            Build("basic house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("eco house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("hospital", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("community center", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("luxury house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("public transport", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[7])
-                                        {
-                                            Build("food supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("shops", 0, 0, 0);
-                                        }
-                                        break;
-                                    case 5:
-                                        if (currentRoom == rooms[1])
-                                        {
-                                            Build("basic house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("eco house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("hospital", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("community center", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("luxury house", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("public transport", 0, 0, 0);
-                                        }
-                                        else if (currentRoom == rooms[7])
-                                        {
-                                            Build("food supply", 0, 0, 0);
-                                            Console.WriteLine(" ");
-                                            Build("shops", 0, 0, 0);
-                                        }
-                                        break;
-                                }
-
-                                string? buildingOption = Console.ReadLine();
-
-                                while (!buildings.Contains(buildingOption))
-                                    {
-                                        Console.WriteLine("that is not a valid building.");
-                                        Console.Write("> ");
-                                        buildingOption = Console.ReadLine();
-                                    }
-
-                                if (buildingCounters.ContainsKey(buildingOption))
-                                    {
-                                        buildingCounters[buildingOption]++;
-                                        Console.WriteLine($"you have sucessfully built {buildingOption}");
-                                    }                       
-                            }
-
-                            if (userInput1 == "demolish")
-                            {
-                                Console.WriteLine("Demolish");
-                            }
-                        }
-
-                        if (userInput == "population")
-                        {
-                            Population.DisplayPopulation();
-                        }
-
-                        if (userInput == "energy")
-                        {
-                            List<string> buildings = new List<string>();
-                            int statHolder1 = 0;
-                            string statHolder2 = "";
-                            int statHolder3 = 0;
-                            double energy1Consumption = 0;
-                            double energy1Income = 0;
-                            double energy2Consumption = 0;
-                            double energy2Income = 0;
-                            double energy3Consumption = 0;
-                            double energy3Income = 0;
-                            if (energy1Consumption == 0 && energy2Consumption == 0 && energy3Consumption == 0)
-                            {
-                                Console.WriteLine($"You are currently not using any type of energy.");
-                            }
-                            Console.WriteLine($"You have {buildings.Count} buildings.");
-                            Console.WriteLine(statHolder1);
-                            Console.WriteLine(statHolder2);
-                            Console.WriteLine(statHolder3);
-                        }
-                        
+                    case "2":
+                        CustomizeHandler();
                         break;
-
-                    case "return":
-                        Return();
-                        PrintMap(currentRoom, rooms);
-                        break;
-
                     case "move":
-                        Console.WriteLine("which area of your city do you wish to go to?");
-                        Console.WriteLine("residence");
-                        Console.WriteLine("moneymaker");
-                        Console.WriteLine("energy");
-                        
-                        Console.Write("> ");
-
-                        string? inputLine = Console.ReadLine();
-                        List<string> directions = new List<string> {"energy", "moneymaker", "residence", "west" };
-
-                        while (!directions.Contains(inputLine) || currentRoom == null)
-                        {
-                            Console.WriteLine("That is not valid direction.");
-                            Console.Write("> ");
-                            inputLine = Console.ReadLine();
-                        }
-
-                        Move(inputLine);
-                        PrintMap(currentRoom,rooms);
+                    case "1":
+                        MoveHandler();
                         break;
 
                     case "quit":
@@ -359,16 +129,250 @@ namespace WorldOfZuul
                         break;
 
                     case "help":
+                    case "5":
                         PrintHelp();
                         break;
 
                     default:
-                        Console.WriteLine("I don't know what command.");
+                        Console.WriteLine("I don't know that command.");
                         break;
                 }
             }
-
+            Console.WriteLine();
+            EndGameSummary();
+            SetColor(Magenta);
+            Console.WriteLine("Your stats are: ");
+            SetColor(Gray);
+            Console.Write("Pollution: ");
+            DisplayPollution();
+            Console.WriteLine();
+            SetColor(Blue);
+            Console.WriteLine($"Happiness: {Happyness.happyness}");
+            SetColor(Yellow);
+            Console.WriteLine($"Money: {currentMoney}");
+            SetColor(Cyan);
+            Population.displayPopulation();
+            SetColor(Green);
             Console.WriteLine("Thank you for playing EcoCity!");
+            ColorReset();
+        }
+
+        /*-------------------------------------------------------------------------------------
+            Handles user commands.
+        ---------------------------------------------------------------------------------------*/
+
+        private void ActionHandler()
+        {
+            List<string> validActions = new List<string> { "skip day", "stats", "back", "1", "2", "B" };
+            Console.Write("Type: ");
+            SetColor(Blue);
+            Console.Write("     < 1 >         < 2 >          < B >  ");
+            ColorReset();
+            Console.WriteLine();
+            for (int i = 0; i <= 2; i++)
+            {
+                SetColor(Red);
+                Console.Write($"   |     {validActions[i]}");
+
+            }
+
+            Console.Write("     |");
+            ColorReset();
+            Console.WriteLine();
+            Console.Write("> ");
+            string? selectedAction = Console.ReadLine();
+
+            selectedAction = ValidateInput(validActions, selectedAction);
+
+            if (selectedAction == "skip day" || selectedAction == "1")
+            {
+                Console.WriteLine("You have skipped a day.");
+                dayCounter.UpdateDay();
+            }
+            else if (selectedAction == "stats" || selectedAction == "2")
+            {
+                Console.WriteLine($"current money: {currentMoney}");
+                Console.Write("Pollution: ");
+                DisplayPollution();
+                Console.WriteLine();
+                Console.WriteLine($"Happiness: {Happyness.happyness}");
+                Population.displayPopulation();
+            }
+        }
+
+        private void MoveHandler()
+        {
+            List<string> validDirections = new List<string> { "north", "east", "south", "west", "back", "n", "e", "s", "w", "b" };
+            while (true)
+            {
+                SetColor(White);
+                Console.Write("Choose: ");
+                ColorReset();
+                SetColor(Blue);
+                Console.Write(" < N >        < E >         < S >        < W >        < B >  ");
+                ColorReset();
+                Console.WriteLine();
+                for (int i = 0; i < 5; i++)
+                {
+                    SetColor(Red);
+                    Console.Write($"   |     {validDirections[i]}");
+                    
+                }
+
+                Console.Write("   |");
+                ColorReset();
+                Console.WriteLine();
+
+                string? selectedDirection = Console.ReadLine();
+
+                selectedDirection = ValidateInput(validDirections, selectedDirection.ToLower());
+
+                if (selectedDirection != "b")
+                {
+                    Move(selectedDirection);
+                    PrintMap(currentRoom, rooms);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        private void CustomizeHandler()
+        {
+            List<string> validCustomizeOptions = new List<string> { "infrastructure", "energy", "back", "1", "2", "3", "B" };
+            SetColor(Blue);
+            Console.WriteLine("Choose:   < 1 >       < 2 >     < B > ");
+            ColorReset();
+            Console.Write("> ");
+            for (int i = 0; i < 3; i++)
+            {
+                SetColor(Red);
+                Console.Write($" | {validCustomizeOptions[i]}");
+            }
+            Console.Write(" |");
+            ColorReset();
+            Console.WriteLine();
+            string? selectedCustomizeOption = Console.ReadLine();
+
+            selectedCustomizeOption = ValidateInput(validCustomizeOptions, selectedCustomizeOption);
+
+            if (selectedCustomizeOption == "1")
+            {
+                Console.WriteLine("These are the current buildings you have in this room:");
+                currentRoom?.DisplayBuildingsInTheCurrentRoom();
+                InfrastructureHandler();
+            }
+            if (selectedCustomizeOption == "2")
+            {
+                Console.WriteLine("You currently have these buildings in this room:");
+                ENERGY.DisplayEnergy();
+            }
+
+        }
+        private void InfrastructureHandler()
+        {
+            Console.WriteLine("Here you can");
+            List<string> validInfrastructureOptions = new List<string> { "build", "demolish", "back", "1", "2", "b" };
+            SetColor(Blue);
+            Console.WriteLine("Choose:   < 1 >         < 2 >           < B >");
+            ColorReset();
+            for (int i = 0; i < 3; i++)
+            {
+                SetColor(Red);
+                Console.Write($"   |     {validInfrastructureOptions[i]}");
+            }
+            Console.Write("   |   ");
+            ColorReset();
+            Console.WriteLine();
+
+            Console.Write("> ");
+            string? selectedInfrastructureOption = Console.ReadLine();
+
+            selectedInfrastructureOption = ValidateInput(validInfrastructureOptions, selectedInfrastructureOption.ToLower());
+
+            if (selectedInfrastructureOption == "1")
+            {
+                Build();
+            }
+            if (selectedInfrastructureOption == "2")
+            {
+                Demolish();
+            }
+
+        }
+
+
+
+
+        /*-------------------------------------------------------------------------------------
+            Executes commands like: move, customize, etc.
+        ---------------------------------------------------------------------------------------*/
+
+        private void Build()
+        {
+            Console.WriteLine("What building do you wish to build out of these options?");
+
+            Dictionary<string, int>? buildingsInRoom = currentRoom?.buildings;
+
+            if (buildingsInRoom == null || buildingsInRoom.Values.All(value => value == -1)) 
+            {
+                Console.WriteLine("you can't build here yet.");
+                return;
+            }
+            else
+            {
+                Building.DisplayBuildingsCosts();
+                Console.WriteLine("back");
+
+                Console.Write("> ");
+                string? buildingChoice = Console.ReadLine();
+
+                if (buildingChoice == "back")
+                {
+                    InfrastructureHandler();
+                    return;
+                }
+                while (buildingChoice == null || currentRoom != null && !currentRoom.buildings.ContainsKey(buildingChoice))
+                {
+                    Console.WriteLine("that is not a valid building.");
+                    Console.Write("> ");
+                    buildingChoice = Console.ReadLine();
+                }
+                if (Building.CanPlayerCanAffordBuilding(buildingChoice))
+                {
+                    Building.UpdateDailyProfit(buildingChoice);
+                    Building.DeductPlayersMoney(buildingChoice);
+                    ENERGY.DetermineBuildingType(buildingChoice);
+                    currentRoom?.AddBuildingToRoom(buildingChoice);
+                    Console.WriteLine($"current money: {currentMoney}");
+                }
+            }
+        }
+
+        public void AvailableBuldings()
+        {
+            Console.WriteLine();
+        }
+
+        private void Demolish()
+        {
+            Console.WriteLine("What building do you wish to demolish out of these options?");
+            currentRoom?.DisplayBuildingsInTheCurrentRoom();
+            Console.WriteLine("back");
+
+            Console.Write("> ");
+            string? buildingChoice = Console.ReadLine();
+            if (buildingChoice != null)
+            {
+                currentRoom?.RemoveBuildingFromRoom(buildingChoice);
+            }
+            else if (buildingChoice == "back")
+            {
+                CustomizeHandler();
+                return;
+            }
         }
 
         private void Move(string direction)
@@ -381,7 +385,9 @@ namespace WorldOfZuul
             }
             else
             {
-                Console.WriteLine($"You can't go {direction}!");
+                SetColor(Red);
+                Console.WriteLine($"You're on the edge of the map!!");
+                ColorReset();
             }
         }
 
@@ -397,64 +403,188 @@ namespace WorldOfZuul
         {
             Console.WriteLine("Remember: the more sustainable your city is, the more expensive it becomes.");
             Console.WriteLine("However, it attracts more people, which also means more money.");
+            ColorReset();
             Console.WriteLine();
-            Console.WriteLine("Type 'move' to navigate");
-            Console.WriteLine("Type 'customize' to customize your city");
-            Console.WriteLine("Type 'actions' to skip a day or check your progress");
-            Console.WriteLine("Type 'look' for more details.");
-            Console.WriteLine("Type 'return' to go to the previous room.");
-            Console.WriteLine("Type 'back' to go back.");
-            Console.WriteLine("Type 'help' to print this message again.");
-            Console.WriteLine("Type 'quit' to exit the game.");
-        }
-        
-        public static void Build(string buildingName, int cost, int energyConsumption, int pollution)
-        {
-            Console.WriteLine($"{buildingName}");
-            Console.WriteLine($"Cost: {cost}");
-            Console.WriteLine($"Energy consumption: {energyConsumption}");
-            Console.WriteLine($"Pollution: {pollution}");
+            SetColor(Red);
+            Console.WriteLine("Helpful tips to improve your game: ");
+            ColorReset();
+            SetColor(Blue);
+            Console.WriteLine("*   In each room you can build different buildings.");
+            Console.WriteLine("*   Go to a room by typing 1 and choosing a direction");
+            Console.WriteLine("*   If you have chosen a room now you can choose to customize by typing < B > and then < 2 > ");
+            ColorReset();
+            Console.WriteLine();
+            SetColor(Magenta);
+            Console.WriteLine("*   If you want to choose a different number from the options");
+            Console.WriteLine("    type < B > and then choose another number");
+            ColorReset();
+            Console.WriteLine();
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 1 > ");
+            ColorReset();
+            Console.WriteLine("to move around");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 2 > ");
+            ColorReset();
+            Console.WriteLine("to customize your city");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 3 > ");
+            ColorReset();
+            Console.WriteLine("to skip a day or check your progress");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 4 > ");
+            ColorReset();
+            Console.WriteLine("to see description of a place you are currently located in");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< 5 > ");
+            ColorReset();
+            Console.WriteLine("to print this message again");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< B > ");
+            ColorReset();
+            Console.WriteLine("to return to options");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< Clear > ");
+            ColorReset();
+            Console.WriteLine("to tidy up the console");
+            Console.Write("Type ");
+            SetColor(Red);
+            Console.Write("< Quit > ");
+            ColorReset();
+            Console.WriteLine("to exit the game");
         }
 
-         static void PlaceBuilding(string buildingName)
+        private static void EndGameSummary()
         {
-            Console.WriteLine($"you have successfuly built {buildingName}");
-        }
+            if (Happyness.happyness <= 1000)
+            {
+                SetColor(Red);
+                Console.WriteLine("Environmental Crisis");
+                Console.WriteLine();
+                Console.WriteLine("In this sad outcome, the city is in trouble because we didn't take care of the environment.");
+                Console.WriteLine("The air and water are dirty, and plants and animals are disappearing.");
+                Console.WriteLine("This hurts people's health and happiness.");
+                Console.WriteLine("This ending shows how important it is to think about the environment when building a city.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else if (Happyness.happyness <= 2000)
+            {
+                SetColor(DarkMagenta);
+                Console.WriteLine("Struggling to be Green");
+                Console.WriteLine();
+                Console.WriteLine("Even though we tried, the city is still having a hard time being good to the environment.");
+                Console.WriteLine("We don't have enough things to help us be green, like clean energy.");
+                Console.WriteLine("People in the city are dealing with problems like dirty air and water.");
+                Console.WriteLine("We learn that we need to do more to make the city better for the environment.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else if (Happyness.happyness <= 3000)
+            {
+                SetColor(Yellow);
+                Console.WriteLine("Finding the Middle");
+                Console.WriteLine();
+                Console.WriteLine("In this okay ending, the city is doing better at being green, but we still have some problems.");
+                Console.WriteLine("We are getting better at things like handling our trash and using clean energy. ");
+                Console.WriteLine("However, there are still issues like too much traffic.");
+                Console.WriteLine("This shows that we are learning and trying to make the city a good place for everyone.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else if (Happyness.happyness <= 4000)
+            {
+                SetColor(Blue);
+                Console.WriteLine("Happy and Green City");
+                Console.WriteLine();
+                Console.WriteLine("Because of good choices, the city is now a happy place with clean air and parks. ");
+                Console.WriteLine("We use things like wind and sun to make energy, and people have a good life.");
+                Console.WriteLine("The city becomes a role model for other places, showing that being good to the environment can make everyone's life better.");
+                Console.WriteLine();
+                ColorReset();
+            }
+            else
+            {
+                SetColor(Green);
+                Console.WriteLine("Super Eco-Friendly City");
+                Console.WriteLine();
+                Console.WriteLine("In this best ending, the city is amazing because we take care of the environment in every way.");
+                Console.WriteLine("We use clean energy, have lots of parks, and teach everyone how to be eco-friendly.");
+                Console.WriteLine("People are happy, and the city is a great example for others. ");
+                Console.WriteLine("This ending teaches us that learning about and caring for the environment makes the world a better place for everyone.");
+                Console.WriteLine();
+                ColorReset();
+            }
 
+        }
 
         private void Return()
         {
-            if(roomHistory.Count == 1)
-                {
-                    Console.WriteLine("You can't return from here!");
-                }
+            if (roomHistory.Count == 1)
+            {
+                Console.WriteLine("You can't return from here!");
+            }
             else
             {
                 roomHistory.Pop();
                 currentRoom = roomHistory.Peek();
-            }  
+            }
         }
-        private static void PrintMap(Room? currentRoom,Room[] rooms)
+
+        private static void PrintMap(Room? currentRoom, Room[] rooms)
         {
-            Console.WriteLine();
-            Console.WriteLine("Map:");
-            for(int i=0; i<rooms.Length; i++)
+
+
+            for (int i = 0; i < rooms.Length; i++)
             {
-                
-                if(rooms[i]== currentRoom)
+
+                if (rooms[i] == currentRoom)
                 {
-                    Console.Write("X ");
+                    Console.Write("o ");
                 }
                 else
                 {
-                    Console.Write(". ");
+                    Console.Write("- ");
                 }
-                if((i+1)%3 == 0)
+                if ((i + 1) % 3 == 0)
                 {
                     Console.WriteLine();
                 }
             }
         }
+
+        /*-------------------------------------------------------------------------------------
+           Util - functions to avoid code repetition.
+       ---------------------------------------------------------------------------------------*/
+
+        private string ValidateInput(List<string> validInputs, string? selectedInput)
+        {
+
+            while (selectedInput == null || !validInputs.Contains(selectedInput))
+            {
+                Console.WriteLine("That is not valid option.");
+                Console.Write("> ");
+                selectedInput = Console.ReadLine();
+            }
+
+            return selectedInput;
+        }
+
+        private void PrintUserOptions(List<string> Options)
+        {
+            for (int i = 0; i < Options.Count; i++)
+            {
+                Console.WriteLine(Options[i]);
+            }
         }
     }
+}
+
 
